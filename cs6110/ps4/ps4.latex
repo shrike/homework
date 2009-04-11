@@ -44,7 +44,12 @@
   %--------------------
   % *** Problem 1 *** %
   %--------------------
-  \item Problem 1
+  \item \textbf{Domain Isomorphism}
+
+    \begin{enumerate}
+    % Part a.
+    \item Isomorphic.
+
 	We define a mapping $\theta$ that maps $D$ to $D\times U$ as follows:
 	\[
 		\forall d\in D:~ \theta(d) = (d,unit)
@@ -59,10 +64,21 @@
 			\bigsqcup_n \theta(x_n) =  \bigsqcup_n (x_n, unit) = (\bigsqcup_n x_n,\bigsqcup_n  unit) = (\bigsqcup_n x_n,unit) = \theta (\bigsqcup_n x_n)
 		\]
 	\end{itemize}
+    % Part b.
+    \item Not isomorphic.
+    \end{enumerate}
   %--------------------
   % *** Problem 2 *** %
   %--------------------
-  \item Problem 2
+  \item \textbf{Iterators}
+  %--------------------
+  % *** Problem 3 *** %
+  %--------------------
+  \item \textbf{Axiomatic Semantics}
+  %--------------------
+  % *** Problem 4 *** %
+  %--------------------
+  \item \textbf{Explicit Initialization}
 \end{enumerate}
 
 \end{document}
