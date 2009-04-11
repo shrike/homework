@@ -41,15 +41,28 @@
 \maketitle
 
 \begin{enumerate}
-    %--------------------
-    % *** Problem 1 *** %
-    %--------------------
-    \item Problem 1
-
-    %--------------------
-    % *** Problem 2 *** %
-    %--------------------
-    \item Problem 2
+  %--------------------
+  % *** Problem 1 *** %
+  %--------------------
+  \item Problem 1
+	We define a mapping $\theta$ that maps $D$ to $D\times U$ as follows:
+	\[
+		\forall d\in D:~ \theta(d) = (d,unit)
+	\]
+	The mapping $\theta$ is bijective. Indeed, for each element $x$ there is an element $x'\in D\times U$ defined as above, and for each element $x'=(x,unit)\in D\times U$ there is a unique element $x\in D$. The ordering $\sqsubseteq$ on $D\times U$  is defined as $(x_1, unit)\sqsubseteq (x_2,unit)$ iff $x_1 \sqsubseteq x_2$. We can show that the mapping $\theta$ is continuous since it is
+	\begin{itemize}
+		\item
+		monotonic: let $x_1,x_2\in D: x_1\sqsubseteq x_2$. Then $\theta(x_1)=(x_1,unit)\sqsubseteq (x_2,unit) = \theta(x_2)$.
+		\item
+		for every chain $x_0\sqsubseteq x_1\sqsubseteq x_2\sqsubseteq\ldots$ of elements from $D$:
+		\[
+			\bigsqcup_n \theta(x_n) =  \bigsqcup_n (x_n, unit) = (\bigsqcup_n x_n,\bigsqcup_n  unit) = (\bigsqcup_n x_n,unit) = \theta (\bigsqcup_n x_n)
+		\]
+	\end{itemize}
+  %--------------------
+  % *** Problem 2 *** %
+  %--------------------
+  \item Problem 2
 \end{enumerate}
 
 \end{document}
