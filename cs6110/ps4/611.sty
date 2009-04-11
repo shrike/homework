@@ -1,0 +1,173 @@
+\usepackage{amsfonts}
+
+%%% Make sections usable for problems.
+
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2.3ex \@plus.2ex}%
+{\flushleft\large\textsf}}
+
+\renewcommand\subsection{\@startsection {subsection}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2.3ex \@plus.2ex}%
+{\flushleft\normalsize\textsf}}
+
+\renewcommand\subsubsection{\@startsection {subsubsection}{1}{\z@}%
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2.3ex \@plus.2ex}%
+{\flushleft\normalsize\textsf}}
+
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{(\alph{enumii})}
+%%% Set up for fullpage 8.5x11 paper
+\topmargin 0pt
+\advance \topmargin by -\headheight
+\advance \topmargin by -\headsep
+     
+\textheight 8.9in
+     
+\oddsidemargin 0pt
+\evensidemargin \oddsidemargin
+\marginparwidth 0.5in
+     
+\textwidth 6.5in
+
+%%% This puts in the header on homeworks (use instead of maketitle)
+\newcommand\hwheader{
+\begin{center}
+{\large
+\textsf{Cornell University\\
+Computer Science 611 \\
+Problem Set \homework}  \hfill \textsf{DUE: \due}}\\
+\hrulefill
+\end{center}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Programming language macros
+
+\newcommand{\bnf}{\ensuremath{\ \ | \ \ }}
+\newcommand{\sep}{\bnf}
+\newcommand\sqleq{\ensuremath\sqsubseteq}
+
+%%% MACROS for typesetting program constructs
+%%% Syntactic objects are keywords in all caps
+\newcommand\impfnt[1]{\mbox{\bf #1}}
+\newcommand{\IF}{\impfnt{if}}
+\newcommand{\THEN}{\impfnt{then}}
+\newcommand{\ELSE}{\impfnt{else}}
+\newcommand{\SKIP}{\impfnt{skip}}
+\newcommand{\WHILE}{\impfnt{while}}
+\newcommand{\DO}{\impfnt{do}}
+\newcommand{\BREAK}{\impfnt{break}}
+\newcommand{\UNTIL}{\impfnt{until}}
+\newcommand{\TRUE}{\impfnt{true}}
+\newcommand{\FALSE}{\impfnt{false}}
+\newcommand{\FOR}{\impfnt{for}}
+\newcommand{\TO}{\impfnt{to}}
+\newcommand{\cond}[3]{\ensuremath{\IF \: #1 \:\THEN\: #2 \:\ELSE\: #3}}
+\newcommand{\while}[2]{\ensuremath{\WHILE \: #1 \:\DO\: #2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% some Java specific macros
+\newcommand\javafnt\impfnt
+\newcommand{\CLASS}{\javafnt{class}}
+\newcommand{\EXTENDS}{\javafnt{extends}}
+\newcommand{\RETURN}{\javafnt{return}}
+\newcommand{\INT}{\javafnt{int}}
+\newcommand{\BOOLEAN}{\javafnt{boolean}}
+\newcommand{\FLOAT}{\javafnt{float}}
+\newcommand{\IMPLEMENTS}{\javafnt{implements}}
+\newcommand{\PROTECTED}{\javafnt{protected}}
+\newcommand{\PUBLIC}{\javafnt{public}}
+\newcommand{\INTERFACE}{\javafnt{interface}}
+\newcommand{\ABSTRACT}{\javafnt{abstract}}
+\newcommand{\return}[1]{\RETURN \: #1}
+\newcommand{\jint}{\INT \: }
+\newcommand{\jfloat}{\FLOAT \:}
+\newcommand{\jbool}{\BOOLEAN \:}
+\newcommand{\jclass}[3]{
+\ensuremath{
+\begin{array}{l}
+\CLASS \: #1 \:\EXTENDS \: #2 \; \{\\
+\:\:\:\: #3 \\
+\}
+\end{array}
+}}
+\newcommand{\jaclass}[3]{
+\ensuremath{
+\begin{array}{l}
+\ABSTRACT \: \CLASS \: #1 \:\IMPLEMENTS \: #2 \; \{\\
+\:\:\:\: #3 \\
+\}
+\end{array}
+}}
+
+
+\newcommand{\jfunc}[2]{#1\: \{ #2 \}}
+\newcommand{\jinter}[2]{
+\ensuremath{
+\begin{array}{l}
+\INTERFACE \: #1 \; \{\\
+\:\:\:\: #2 \\
+\}
+\end{array}
+}}
+
+\newcommand{\jbclass}[2]{
+\ensuremath{
+\begin{array}{l}
+\CLASS \: #1 \; \{\\
+\:\:\:\: #2 \\
+\}
+\end{array}
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\T}[1]{\texttt{#1}}
+\newcommand{\caret}{\ensuremath{^\wedge}}
+
+%%% MACROS for typesetting configurations
+\newcommand{\config}[2]{\ensuremath{\langle #1,\, #2 \rangle}}
+\newcommand{\configB}[4]{\ensuremath{\langle #1,\, #2,\, #3,\, #4 \rangle}}
+\newcommand{\stepsto}{\Downarrow}
+\newcommand{\stepsone}{\longrightarrow}
+\newcommand\sub[1]{_{\mbox{\scriptsize #1}}}
+\newcommand\subst[3]{{\ensuremath #1\{#2/#3\}}}
+\newcommand\definedas{\stackrel{\triangle}{=}}
+\newcommand\translatesto{\;\;\longmapsto\;\;}
+\newcommand\fn{\ensuremath\lambda}
+
+%%% Some things useful for denotational semantics
+\newcommand\FV[1]{\nm{FV}(#1)}
+\newcommand\SB[1]{[\![#1]\!]} % put double brackets around the argument
+\newenvironment{SBE}{\left[\!\!\!\!\left[\begin{array}{c}}%
+{\end{array}\right]\!\!\!\!\right]}
+\newcommand\bigSB[1]{\begin{SBE}#1\end{SBE}}
+\newcommand\Tr[2]{\ensuremath{{\cal #1}\SB{#2}}}
+\newcommand\C[1]{{\cal C}\SB{#1}}
+\newcommand\Cr[1]{{\cal C}\SB{#1}\rho}
+\newcommand\mathif[3]{\mathit{if}~#1~\mathit{then}~#2~\mathit{else}~#3}
+\newcommand\ini[1]{\nm{in}_{\mbox{\scriptsize{#1}}}}
+\newcommand\inj[2]{\nm{in}_{\mbox{\scriptsize\nm{#1}$\leftarrow$\nm{#2}}}}
+\newcommand\nm[1]{\mbox{\sl #1}}
+\newcommand\lm[3]{\lambda#1\in#2\,.\,#3}
+\newcommand\fnm[1]{\fbox{\sl #1}\,}
+\newcommand{\Te}[1]{\ensuremath{\mathcal{T}\SB{#1}}} % "translation of"
+\newcommand\join{\ensuremath\bigsqcup}
+\newcommand\dq[1]{\mbox{``}#1\mbox{''}}
+\newcommand\sidecond[1]{\qquad\mbox{(#1)}}
+\newcommand\lift[1]{\ensuremath{\lfloor #1 \rfloor}}
+\newcommand{\Set}[1]{{\textbf{#1}}}
+\newcommand{\dom}{\mbox{dom}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand\mquote[1]{\textrm{``}#1\textrm{''}}
+
+%%% macros for types
+\newcommand\lam[2]{\lambda#1.\,#2}
+\newcommand\Lam[2]{\Lambda#1.\,#2}
+\newcommand\arrow{\ensuremath\rightarrow}
+\newcommand{\ty}{\ensuremath{\!:\!}}
+\newcommand{\proves}{\ensuremath{\vdash}}
+
+\newcommand{\Rule}[2]{\infer{#2}{#1}}
+\newcommand{\RuleSide}[3]{\infer[#3]{#2}{#1}}
+

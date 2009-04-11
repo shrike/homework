@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[left=0.8in,right=0.8in,top=0.8in,bottom=0.8in]{geometry}
+\usepackage{611}
+\usepackage{stmaryrd}
+
+\makeatletter
+\def\maketitle{%
+
+    \begin {center}
+    \bfseries
+    \begin{tabular}{|rcl|}
+        \hline
+        & \@author & \\
+        \@title & & \@set \\
+        \@subtitle & & Due: \@duedate \\
+        \hline
+    \end{tabular}
+    \end {center}
+
+} % maketitle
+
+\def\set#1{\def\@set{#1}}
+\def\duedate#1{\def\@duedate{#1}}
+\def\subtitle#1{\def\@subtitle{#1}}
+\def\netid#1{\def\@netid{#1}}
+
+\makeatother
+
+\author {Lyublena Antova, Viktor Ivanov}
+\netid {lra33, vri3}
+\title {Advanced PL}
+\subtitle {CS 6110, Spring 2009}
+\duedate {Friday, April 17}
+\set {Problem Set 4}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+    %--------------------
+    % *** Problem 1 *** %
+    %--------------------
+    \item Problem 1
+\end{enumerate}
+
+\end{document}
