@@ -45,6 +45,11 @@
     % *** Problem 1 *** %
     %--------------------
     \item Problem 1
+
+    %--------------------
+    % *** Problem 2 *** %
+    %--------------------
+    \item Problem 2
 \end{enumerate}
 
 \end{document}
