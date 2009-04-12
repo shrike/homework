@@ -50,8 +50,7 @@
     \begin{enumerate}
     % Part a.
     \item Isomorphic.
-
-	We define a mapping $\theta$ that maps $D$ to $D\times U$ as follows:
+	The two domains are isomorphic, since we can define a mapping $\theta$ that maps $D$ to $D\times U$ as follows:
 	\[
 		\forall d\in D:~ \theta(d) = (d,unit)
 	\]
@@ -66,8 +65,30 @@
 		\]
 	\end{itemize}
     % Part b.
-    \item Not isomorphic.
+    \item Isomorphic.
+    We define a mapping $\theta: D\rightarrow E \mapsto \{f\in D_{\bot}\rightarrow E_{\bot} \mid f(\bot)=\bot\}$ in the following way:
+    \[
+    	f \in D\rightarrow E: \theta(f) = f',~\mathrm{where~for}~x\in D_{\bot}
+    	~f'(x) =
+    		\left\{\begin{array}{ll} \bot & \textrm{if $x=\bot$}\\
+    		f(x) & \textrm{if $x\neq\bot$}
+		\end{array} \right.
+    \]
     \end{enumerate}
+    It is easy to see that $\theta$ is bijective. It is also continuous since it is
+    \begin{itemize}
+			\item 
+	    monotone. Let $f_1,f_2\in D\rightarrow E: f_1\sqsubseteq f_2$ and let $f_1'=\theta(f_1), f_2'=\theta(f_2)$. Let $x\in D_{\bot}$. If $x=\bot: f_1'(\bot)=\bot=f_2'(\bot)$. If $x\neq\bot: f_1'(x)=f_1(x)\le f_2(x)=f_2'(x)$ since $f_1\sqsubseteq f_2$. But then $f_1'\sqsubseteq f_2'$.
+	    \item
+	    preserves LUB. Let $f_0\sqsubseteq f_1\sqsubseteq f_2\sqsubseteq\ldots$ be a chain of elements from $D\rightarrow E$, and let $f_i' = \theta(f_i)$. Let $f = \bigsqcup\limits_n f_n$ and let $f' = \theta(f)$. We show that $f' = \bigsqcup\limits_n f_n'$, that is, $f'$ is LUB of the chain $f_0'\sqsubseteq f_1'\sqsubseteq f_2'\sqsubseteq \ldots$. For each $f_i'$ we have $f_i'\sqsubseteq f'$ since for all $x\in D: f_i'(x)=f_i(x)\le f(x) = f'(x)$, and $f_i'(\bot)=\bot=f'(\bot)$. Also, $f'$ is the least upper bound. Assume there is $g': f' \sqsupset g'\sqsupseteq f_i'$. Then there exist $x\in D_{\bot}$ such that $g'(x)<f'(x)$, and it must be that $x\neq\bot$. But then if $g=\theta^{-1}(g')$ it holds that $f \sqsupset g\sqsupseteq f_i$, thus contradiction with the assumption that $f=\bigsqcup\limits_n f_i$.
+	    
+	    We thus get
+	    \[
+	    	\bigsqcup_n \theta(f_n) = \theta(\bigsqcup_n f_n)
+	    \]
+	    
+		\end{itemize}
+    
   %--------------------
   % *** Problem 2 *** %
   %--------------------
