@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage[left=0.8in,right=0.8in,top=0.8in,bottom=0.8in]{geometry}
 \usepackage{611}
+\usepackage{proof}
 \usepackage{stmaryrd}
 
 \makeatletter
@@ -75,6 +76,30 @@
   % *** Problem 3 *** %
   %--------------------
   \item \textbf{Axiomatic Semantics}
+	\begin{enumerate}
+	% --- 3a. ---
+	\item Hoare logic rules for \textbf{while} loops.
+		\begin{enumerate}
+		\item The rule \Rule {\{A\}~c~\{A\}}{\{A\}~\WHILE~b~\DO~c~\{A \land \neg b \}} is sound. Assuming that the premise, $\{A\}~c~\{A\}$, holds we can use other sound logic rules to show that the conclusion is also valid:
+
+\medskip
+
+\begin{equation*}
+\RuleSide {\Rule {\{A\}~c~\{A\}}{(A \land b \Rightarrow A)~(\{A\}~c~\{A\})~(A \Rightarrow A)}} {
+\RuleSide {\{A \land b\}~c~\{A\}} {\{A\}~\WHILE~b~\DO~c~\{A \land \neg b \}}{(While)} }{(Conseq)}
+\end{equation*}
+
+\medskip
+
+		\item The rule \Rule {\{A \land b\}~c~\{A \lor b\}}{\{A\}~\WHILE~b~\DO~c~\{A \land \neg b \}} is {\em not} sound. Here is a counterexample:
+
+Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. Then, $\{A \land b\}c\{A \lor b\}$ is a valid partial correctness assumption, however, $\{A\}~\WHILE~b~\DO~c~\{A \land \neg b \}$ is not. For example, if $\sigma = \{b \mapsto \TRUE, x \mapsto 1\}$ then $A$ holds before executing the loop but does not hold afterwards.
+
+		\end{enumerate}
+	% --- 3b. ---
+	\item Hoare logic rule for the \DO-\UNTIL{} loop.
+
+	\end{enumerate}
   %--------------------
   % *** Problem 4 *** %
   %--------------------
