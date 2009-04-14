@@ -117,6 +117,19 @@
   % *** Problem 2 *** %
   %--------------------
   \item \textbf{Iterators}
+	\begin{enumerate}
+		\item Operational Semantics
+		\item CPS Translation
+
+		We are going to do the translation in the usual naming environment $\rho$, control context $k$ and a new coroutine context $c$. The idea is that when translating the iterator, we are going to pass it a new $c$ where we take the next value for $x$ and a continuation and translate the body using these. When translating \textbf{yield} we use the coroutine context $c$ passing it the value of $e$ and the continuation $k$.
+
+		\begin{eqnarray*}
+			& & \SB{\textbf{yield}~e}\rho k c = \SB{e}\rho(\lam v c~v~k)c \\
+			& & \SB{\textbf{for}~x~\textbf{in}~e_i~\DO~e_b}\rho k c = 
+				\SB{e_i}\rho k (\lam{vk'}\SB{e_b}(EXTEND~\rho~``x"~v) k' c) 
+		\end{eqnarray*}
+
+	\end{enumerate}
   %--------------------
   % *** Problem 3 *** %
   %--------------------
@@ -182,6 +195,23 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
   % *** Problem 4 *** %
   %--------------------
   \item \textbf{Explicit Initialization}
+	\begin{enumerate}
+		\item Evaluation Context and Small-Step Operational Semantics
+
+		\begin{eqnarray*}
+			& & E ::= \ldots |~\#n~E~|~\#n~E:=e~|~\#n~(v_1, v_2, \ldots, v_{n-1}, \textbf{null}, \ldots ) := E \\
+			\\
+			& & \Rule{}{\textbf{malloc}~\tau_1,\ldots,\tau_n \stepsone (\textbf{null}, \ldots, \textbf{null})} \\ \\
+			& & \Rule{}{\#n~(v_1, \ldots, v_{n-1}, v_n, \ldots) \stepsone v_n }\\ \\
+			& & \Rule{}
+{\#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots) := v_n 
+\stepsone (v_1, \ldots, v_{n-1}, v_n, \ldots)}
+		\end{eqnarray*}
+
+
+		\item Static Semantics
+	\end{enumerate}
+
 \end{enumerate}
 
 \end{document}
