@@ -74,7 +74,7 @@
     		f(x) & \textrm{if $x\neq\bot$}
 		\end{array} \right.
     \]
-    \end{enumerate}
+
     It is easy to see that $\theta$ is bijective. It is also continuous since it is
     \begin{itemize}
 			\item 
@@ -88,7 +88,31 @@
 	    \]
 	    
 		\end{itemize}
-    
+	    % Part c.
+    	\item Isomorphic.
+    	The two domains are isomorphic since the mapping \textbf{curry} that maps elements from $D\times E\rightarrow F$ to elements in $D\rightarrow E\rightarrow F$ is bijective and continuous. \textbf{curry} is defined as:
+    	\[
+    		\textbf{curry} := \lam{f}{\lam{d\in D}{\lam{e\in E}{f(d,e)}}}
+    	\]
+	    The inverse function \textbf{uncurry} is defined as follows:
+	    \[
+	    		\textbf{uncurry} := \lam{g}{\lam{(d,e)\in D\times E}{(g(d))(e)}}
+	    \]
+
+    \end{enumerate}
+    The mapping curry is 
+		\begin{itemize}
+			\item monotone: Let $f_1,f_2\in D\times E\rightarrow F: f_1\sqsubseteq f_2$ and let $g_i=\textbf{curry}(f_i), i=1,2$.
+			\begin{eqnarray*}
+				&& f_i \sqsubseteq f_2 \Leftrightarrow\\
+				&& \forall (d,e)\in D\times E:~ f_1(d,e)\le f_2(d,e) \Leftrightarrow \forall d\in D~\forall e\in E ~ f_1(d,e)\le f_2(d,e)\\
+				&& \Leftrightarrow \forall d\in D ~ \forall e\in E ~\textbf{curry}(f_1)(d)(e) \sqsubseteq \textbf{curry}(f_2)(d)(e) \\
+				&& \Leftrightarrow \forall d\in D ~ \textbf{curry}(f_1)(d) \sqsubseteq \textbf{curry}(f_2)(d) \\
+				&& \Leftrightarrow \textbf{curry}(f_1) \sqsubseteq \textbf{curry}(f_2)\\
+			\end{eqnarray*}
+			\item preserves LUB: Let $f_0\sqsubseteq f_1\sqsubseteq f_2 \sqsubseteq \ldots$ be a chain of elements in $D\times E\rightarrow F$. Let $f=\bigsqcup\limits_n f_n$, that is $f_n\sqsubseteq f$ for all n.
+			 Let $g_n = \textbf{curry}(f_n), g = \textbf{curry}(f)$. Since \textbf{curry} is monotone, $g_n\sqsubseteq g$ for all $n$, that is $g$ is an upper bound of the chain $g_0\sqsubseteq g_1 \sqsubseteq g_n \sqsubseteq \ldots$. Assume now there is a function $g'\in D\rightarrow E\rightarrow F$ such that $g_n\sqsubseteq g'\sqsubset g$ for all $n$. Then for all $d\in D$ $g'(d)\sqsubseteq g(d)$ and there is a $d_0\in D: g'(d_0)\sqsubset g(d_0)$. This means that for all $e\in E~ g'(d)(e)\le g(d)(e)$ and for some $e_0\in E g'(d_0)(e_0)< g(d_0)(e_0)$. But then if $f'=\textbf{uncurry}(g')$ we have $f_n\sqsubseteq f'\sqsubset f$, which is a contradiction to the assumption that $f=\bigsqcup\limits_n f_n$.
+		\end{itemize}    
   %--------------------
   % *** Problem 2 *** %
   %--------------------
