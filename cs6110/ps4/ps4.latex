@@ -201,15 +201,50 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 		\begin{eqnarray*}
 			& & E ::= \ldots |~\#n~E~|~\#n~E:=e~|~\#n~(v_1, v_2, \ldots, v_{n-1}, \textbf{null}, \ldots ) := E \\
 			\\
-			& & \Rule{}{\textbf{malloc}~\tau_1,\ldots,\tau_n \stepsone (\textbf{null}, \ldots, \textbf{null})} \\ \\
+			& & \Rule{}{\textbf{malloc}~\tau_1 * \ldots * \tau_n \stepsone (\textbf{null}, \ldots, \textbf{null})} \\ \\
 			& & \Rule{}{\#n~(v_1, \ldots, v_{n-1}, v_n, \ldots) \stepsone v_n }\\ \\
 			& & \Rule{}
 {\#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots) := v_n 
 \stepsone (v_1, \ldots, v_{n-1}, v_n, \ldots)}
 		\end{eqnarray*}
 
-
 		\item Static Semantics
+
+		\begin{equation*}
+			\Rule
+				{}
+				{\Gamma \proves \textbf{malloc}~\tau_1 * \ldots * \tau_n : 
+					(\tau_1 * \ldots * \tau_n)/(1, \ldots, n)}
+		\end{equation*}
+
+		\begin{equation*}
+			\Rule
+				{\Gamma \proves e : 
+					(\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+					\forall i. n_i \neq n}
+				{\Gamma \proves \#n~e : \tau_n}
+		\end{equation*}
+
+		\begin{equation*}
+			\Rule
+				{\Gamma \proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+				\exists i. n_i = n~
+				\Gamma \proves e_2 : \tau_n}
+				{\Gamma \proves \#n~e_1 := e_2 :  
+					(\tau_1 * \ldots * \tau_n * \ldots)/
+					(n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k)}
+		\end{equation*}
+
+		\item Proof of Soundness
+		
+		\begin{enumerate}
+		\item Preservation Lemma
+		\item Progress Lemma
+		\item Soundness Theorem
+		\end{enumerate}
+
+		\item (BONUS) Reinitialization
+
 	\end{enumerate}
 
 \end{enumerate}
