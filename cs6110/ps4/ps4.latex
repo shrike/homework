@@ -102,7 +102,7 @@
 		
 		Evaluation context:
 		\begin{equation*}
-			E ::= \ldots \mid yield~E \mid \FOR~x~in~E~\DO~e_0
+			E ::= \ldots \mid \textbf{yield}~E \mid \FOR~x~\textbf{in}~E~\DO~e_0
 		\end{equation*}
 		
 		To define the operational semantics of iterators, we will introduce the command \textbf{save}$_v$, which will save the value produced by a \textbf{yield} operation. The rules we need to add are then the following:
