@@ -251,6 +251,71 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 		
 		\begin{enumerate}
 		\item Preservation Lemma
+	The Preservation Lemma states that for a typed expression $e$, if $e$ can be stepped to $e'$ then $e'$ has the same type as $e$:
+
+		\begin{equation*}
+			\proves e : \tau \land e \stepsone^* e' \Rightarrow e' : \tau
+		\end{equation*}
+
+	We are going to prove this lemma by induction on the typing derivations of $\proves e : \tau$. Let's examine cases on $e \stepsone e'$. The cases for reducing on the left and on the right side of application and the $\beta$-reduction case were shown in class. Here we show the cases new to this problem.
+
+\medskip
+
+	{\em Case Index:} $e = \#n~e_0$, $e' = \#n~e_0'$
+		\begin{equation*}
+			\proves e : \tau_n \Rightarrow~
+			\proves \#n~e_0 : \tau_n \Rightarrow~
+			\proves e_0 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+					\forall i. n_i \neq n\\
+		\end{equation*}
+
+		Since the typing derivation for $e_0$ is a subderivation of the derivation for $e$, by the induction hypothesis the step $e_0 \stepsone e_0'$ preserves type thus:
+
+		\begin{equation*}
+			\proves e_0' : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+										\forall i. n_i \neq n
+		\end{equation*}
+
+	Now that we know the type of $e_0'$ we can use the rule for typing $\#n~e$ to prove the type of $e'$:
+
+		\begin{equation*}
+			\Rule
+				{\Gamma \proves e_0' : 
+					(\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+					\forall i. n_i \neq n}
+				{\Gamma \proves \#n~e_0' : \tau_n}
+		\end{equation*}
+
+		Finally, $\proves \#n~e_0' : \tau_n \Rightarrow~ \proves e' : \tau_n$.
+
+\medskip
+
+	{\em Case Left-of-Assignment:} $e = \#n~e_1 := e_2$, $e' = \#n~e_1' := e_2$
+
+		\begin{eqnarray*}
+			\proves e : 
+					(\tau_1 * \ldots * \tau_n * \ldots)/
+					(n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k) \Rightarrow~ \\
+				\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k) \land
+				\exists i. n_i = n \land
+				\proves e_2 : \tau_n
+		\end{eqnarray*}
+
+		Since the typing derivation for $e_1$ is a subderivation of the derivation for $e$, by the induction hypothesis the step $e_1 \stepsone e_1'$ preserves type thus:
+
+		\begin{equation*}
+			\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+				\exists i. n_i = n
+		\end{equation*}
+
+Now that we have the type of $e_1'$ and we also know that $\proves e_2 : \tau_n$ we actually have all premises needed to prove that $e : (\tau_1 * \ldots * \tau_n * \ldots)/ (n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k)$.
+
+\medskip
+
+	{\em Case Right-of-Assignment:} 
+
+	$e = \#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots ) := e_0$, $e' = \#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots ) := e_0'$
+
 		\item Progress Lemma
 		\item Soundness Theorem
 		\end{enumerate}
