@@ -97,7 +97,34 @@
   %--------------------
   \item \textbf{Iterators}
 	\begin{enumerate}
+		% --- 2a. ---
 		\item Operational Semantics
+		
+		Evaluation context:
+		\begin{equation*}
+			E ::= \ldots \mid yield~E \mid \FOR~x~in~E~\DO~e_0
+		\end{equation*}
+		
+		To define the operational semantics of iterators, we will introduce the command \textbf{save}$_v$, which will save the value produced by a \textbf{yield} operation. The rules we need to add are then the following:
+
+		\begin{equation*}
+			 \Rule{}{<\FOR~x~in~v~\DO~e_b, \sigma> \stepsone <\textbf{null},\sigma>}
+		\end{equation*}
+
+		
+		\begin{equation*}
+			 \Rule{}{<\textbf{yield}~v, \sigma> \stepsone <\textbf{save}_v,\sigma>}
+		\end{equation*}
+		
+		
+		\begin{equation*}
+			 \Rule{}{<\FOR~x~in~E[\textbf{save}_v]~\DO~e_b, \sigma> \stepsone <\FOR~x~in~E[\subst{e_b}{v}{x}]~\DO~e_b, \sigma>}
+		\end{equation*}
+
+		
+		
+		
+		% --- 2b. ---
 		\item CPS Translation
 
 		We are going to do the translation in the usual naming environment $\rho$, control context $k$ and a new coroutine context $c$. The idea is that when translating the iterator, we are going to pass it a new $c$ where we take the next value for $x$ and a continuation and translate the body using these. When translating \textbf{yield} we use the coroutine context $c$ passing it the value of $e$ and the continuation $k$.
