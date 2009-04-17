@@ -253,7 +253,7 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 	The Preservation Lemma states that for a typed expression $e$, if $e$ can be stepped to $e'$ then $e'$ has the same type as $e$:
 
 		\begin{equation*}
-			\proves e : \tau \land e \stepsone^* e' \Rightarrow e' : \tau
+			\proves e : \tau \land e \stepsone^* e' ~ \Rightarrow ~ \proves e' : \tau
 		\end{equation*}
 
 	We are going to prove this lemma by induction on the typing derivations of $\proves e : \tau$. Let's examine cases on $e \stepsone e'$. The cases for reducing on the left and on the right side of application and the $\beta$-reduction case were shown in class. Here we show the cases new to this problem.
@@ -261,6 +261,19 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 \medskip
 
 	\begin{itemize}
+	
+	\item
+	{\em Case \textbf{malloc}:} $e = \textbf{malloc}~\tau_1 * \ldots * \tau_n, ~ e'= (\textbf{null}, \ldots, \textbf{null})$. Assume
+	\[
+		\proves \textbf{malloc}~\tau_1 * \ldots * \tau_n: (\tau_1,\ldots,\tau_n)\backslash\{1,\ldots,n\}
+	\]
+	By the definition of $\textbf{malloc}$ we have
+	\[
+		\proves (\textbf{null}, \ldots, \textbf{null}):  (\tau_1,\ldots,\tau_n)\backslash\{1,\ldots,n\}
+	\]
+
+	\smallskip
+	
 	\item
 	{\em Case Index:} $e = \#n~e_0$, $e' = \#n~e_0'$
 		
@@ -395,6 +408,11 @@ Now that we have the type of $e_1'$ and we also know that $\proves e_2 : \tau_n$
 			\end{itemize}
 		\end{itemize}
 		\item Soundness Theorem
+		
+		The soundness theorem can be formulated as follows:
+		\[
+			\proves e: \tau \land e \stepsone^* e' \Rightarrow e'\in\textbf{Value} \lor \exists e''. e'\mapsto e''
+		\]
 		\end{enumerate}
 
 		\item (BONUS) Reinitialization
