@@ -222,30 +222,29 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 
 		\item Static Semantics
 
-		\begin{equation*}
+		\begin{equation}
 			\Rule
 				{}
 				{\Gamma \proves \textbf{malloc}~\tau_1 * \ldots * \tau_n : 
-					(\tau_1 * \ldots * \tau_n)/(1, \ldots, n)}
-		\end{equation*}
+					(\tau_1 * \ldots * \tau_n)\backslash\{1, \ldots, n\}}
+		\end{equation}
 
-		\begin{equation*}
+		\begin{equation}
 			\Rule
 				{\Gamma \proves e : 
-					(\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+					(\tau_1*\ldots*\tau_n*\ldots\backslash\{n_1, \ldots, n_k\}~
 					\forall i. n_i \neq n}
 				{\Gamma \proves \#n~e : \tau_n}
-		\end{equation*}
+		\end{equation}
 
-		\begin{equation*}
+		\begin{equation}
 			\Rule
-				{\Gamma \proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+				{\Gamma \proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\}~
 				\exists i. n_i = n~
 				\Gamma \proves e_2 : \tau_n}
 				{\Gamma \proves \#n~e_1 := e_2 :  
-					(\tau_1 * \ldots * \tau_n * \ldots)/
-					(n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k)}
-		\end{equation*}
+					(\tau_1 * \ldots * \tau_n * \ldots)\backslash\{n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k\}}
+		\end{equation}
 
 		\item Proof of Soundness
 		
@@ -261,18 +260,19 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 
 \medskip
 
+	\begin{itemize}
+	\item
 	{\em Case Index:} $e = \#n~e_0$, $e' = \#n~e_0'$
-		\begin{equation*}
-			\proves e : \tau_n \Rightarrow~
-			\proves \#n~e_0 : \tau_n \Rightarrow~
-			\proves e_0 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
-					\forall i. n_i \neq n\\
-		\end{equation*}
+		
+			Given $\proves e : \tau_n$, that is,  $\proves (\#n~e_0) : \tau_n$. To prove this we must have had
+			\[
+				\proves e_0 : (\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\}~\forall i. n_i \neq n
+			\]
 
 		Since the typing derivation for $e_0$ is a subderivation of the derivation for $e$, by the induction hypothesis the step $e_0 \stepsone e_0'$ preserves type thus:
 
 		\begin{equation*}
-			\proves e_0' : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+			\proves e_0' : (\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\}~
 										\forall i. n_i \neq n
 		\end{equation*}
 
@@ -281,7 +281,7 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 		\begin{equation*}
 			\Rule
 				{\Gamma \proves e_0' : 
-					(\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+					(\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\}~
 					\forall i. n_i \neq n}
 				{\Gamma \proves \#n~e_0' : \tau_n}
 		\end{equation*}
@@ -289,34 +289,111 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 		Finally, $\proves \#n~e_0' : \tau_n \Rightarrow~ \proves e' : \tau_n$.
 
 \medskip
+	\item
+	{\em Case Left-of-Assignment:} $e = (\#n~e_1 := e_2)$, $e' = (\#n~e_1' := e_2)$
 
-	{\em Case Left-of-Assignment:} $e = \#n~e_1 := e_2$, $e' = \#n~e_1' := e_2$
+		Assume $\proves e : (\tau_1 * \ldots * \tau_n * \ldots)\backslash\{n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k\}$.
+		Then it must hold that
+		\[
+			\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\} \land
+				\exists i. n_i = n \land \proves e_2 : \tau_n
+		\]
 
-		\begin{eqnarray*}
-			\proves e : 
-					(\tau_1 * \ldots * \tau_n * \ldots)/
-					(n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k) \Rightarrow~ \\
-				\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k) \land
-				\exists i. n_i = n \land
-				\proves e_2 : \tau_n
-		\end{eqnarray*}
-
-		Since the typing derivation for $e_1$ is a subderivation of the derivation for $e$, by the induction hypothesis the step $e_1 \stepsone e_1'$ preserves type thus:
+		Since the typing derivation for $e_1$ is a subderivation of the derivation for $e$, by the induction hypothesis the step $e_1 \stepsone e_1'$ preserves type, thus:
 
 		\begin{equation*}
-			\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~
+			\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\}~
 				\exists i. n_i = n
 		\end{equation*}
 
 Now that we have the type of $e_1'$ and we also know that $\proves e_2 : \tau_n$ we actually have all premises needed to prove that $e : (\tau_1 * \ldots * \tau_n * \ldots)/ (n_1, \ldots, n_{i-1}, n_{i+1}, \ldots n_k)$.
 
 \medskip
-
+	\item
 	{\em Case Right-of-Assignment:} 
 
 	$e = \#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots ) := e_0$, $e' = \#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots ) := e_0'$
 
+	Assume $\proves e : (\tau_1 * \ldots * \tau_n * \ldots)\backslash \{n_1, \ldots, n_i, \ldots n_k\}$.
+			Then it must hold that
+			\[
+				\proves (v_1, \ldots, v_{n-1}, \textbf{null}, \ldots ): (n_1, \ldots, n_i, \ldots n_k) ~ \land ~ \exists i. n_i = n ~ \land ~ \proves e_0 : \tau_n
+			\]
+			Since the derivation for $e_0$ is a subderivation for the derivation for $e_0$, and $e\stepsone e_0'$, we can use the induction hypothesis to conclude that $\proves e_0': \tau_n$. But now we can use typing rule (3) to show that
+			\[
+			\proves e': (\tau_1 * \ldots * \tau_n * \ldots)/ (n_1, \ldots, n_i, \ldots n_k)
+			\]
+		\end{itemize}
+		
 		\item Progress Lemma
+		
+		The progress lemma states that we cannot get stuck while evaluating a well-formed expression, and is formulated as follows:
+		\[
+			\proves e:\tau \Rightarrow e \in ~ \textbf{Value} \lor \exists e': e\stepsone e'
+		\]
+		
+		We will prove this by induction on the typing derivation of $e$. In addition to the cases proven in class, we need to show that the theorem holds for the new types of expression defined in the exercise, namely for the three types of expressions
+		\[
+			\textbf{malloc} ~ \tau_1 * \ldots * \tau_n, ~ \#n~e, ~ \#n~e_1:= e_2
+		\]
+
+		\begin{itemize}
+			\item				
+			{\em Case $e = \textbf{malloc} ~ \tau_1 * \ldots * \tau_n:$}
+			
+			We have 
+			\[
+				 \textbf{malloc}~\tau_1 * \ldots * \tau_n \stepsone (\textbf{null}, \ldots, \textbf{null}) \in \textbf{Value}
+			\]
+			
+			\medskip
+			
+			\item
+			{\em Case $e = (\#n~e_0)$}:
+			
+			Assume $\proves \#n~e_0: \tau$ holds. Then it must hold that 
+			\[
+				\proves e_0 : (\tau_1*\ldots*\tau_n*\ldots)/(n_1, \ldots, n_k)~\forall i. n_i \neq n
+			\]
+			From the induction hypothesis either $e_0\in\textbf{Value}$, or $\exists e_0': e_0\stepsone e_0'$. Suppose $e_0 \in \textbf{Value}$, then $e_0=(v_1,\ldots,v_n, \ldots), v_i \in \textbf{Value}, \forall i$. But from the the operational semantics rules we have:
+			\[
+				\#n (v_0, \ldots, v_n, \ldots) \stepsone v_n \in \textbf{Value}
+			\]
+			Otherwise, if $\exists e_0': e_0\stepsone e_0'$ holds, we have that $\#n~e_0\stepsone \#n~e_0'$.
+			
+			\medskip
+			
+			\item
+			{\em Case $e = (\#n~e_1 := e_2)$}:
+			
+			Suppose $\proves e : \tau$.
+			Then it must be that
+			\[
+				\proves e : (\tau_1,\ldots,\tau_n,\ldots)\backslash\{n_1,\ldots,n_{i-1},n_{i+1},\ldots, n_k\}
+			\]
+			and we must have the premise of rule (3) satisfied, namely:
+			\[
+				\proves e_1 : (\tau_1*\ldots*\tau_n*\ldots)\backslash\{n_1, \ldots, n_k\}~\land ~ \exists i. n_i = n ~ \land ~\proves e_2 : \tau_n				
+			\]
+			From the induction hypothesis, since the derivations for $e_1$ and $e_2$ are subderivations of the one for $e$, it must hold that either $e_1\in\textbf{Value}$ or $\exists e_1': e_1\stepsone e_1'$, and either $e_2\in\textbf{Value}$ or $\exists e_2': e_2\stepsone e_2'$:
+			\begin{itemize}
+				\item
+				If $\exists e_1': e_1\stepsone e_1'$ holds, from the operational semantics we have 
+				\[
+					\#n~e_1:=e_2 \stepsone \#n~e_1':=e_2
+				\]
+				\item If $e_1\in\textbf{Value}$ and $\exists e_2': e_2\stepsone e_2'$, from the operational semantics:
+				\[
+					\#n~e_1:=e_2 \stepsone \#n~e_1:=e_2'
+				\]
+				\item
+				If $e_1=(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots)\in\textbf{Value}$ and $e_2=v_n\in\textbf{Value}$, we can apply the last rule of the operational semantics:
+				\[
+					\#n~(v_1, \ldots, v_{n-1}, \textbf{null}, \ldots) := v_n 
+			\stepsone (v_1, \ldots, v_{n-1}, v_n, \ldots)
+				\]
+			\end{itemize}
+		\end{itemize}
 		\item Soundness Theorem
 		\end{enumerate}
 
