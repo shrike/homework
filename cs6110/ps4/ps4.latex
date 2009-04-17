@@ -398,6 +398,33 @@ Now that we have the type of $e_1'$ and we also know that $\proves e_2 : \tau_n$
 		\end{enumerate}
 
 		\item (BONUS) Reinitialization
+			
+			We introduce a new type of expression $\diamond k~e$ which evaluates $e$ down to a tuple and masks the $k$-th element of it. We extend the evaluation contexts to include evaluating the $e$ inside the new expression:
+
+
+		\begin{equation*}
+			E ::= \ldots \mid \diamond j ~ E
+		\end{equation*}
+
+			We add the following new rule to our operational semantics:
+
+		\begin{equation*}
+			\Rule 
+				{}
+				{\diamond j ~ (v_1, \ldots, v_n) \stepsone 
+				 (v_1, \ldots, v_{j-1}, \textbf{null}, \ldots, v_n)}
+		\end{equation*}
+
+			There is also a new rule in our static semantics:
+			
+		\begin{equation*}
+			\Rule 
+				{\Gamma \proves e : 
+				 (\tau_1, \ldots, \tau_n)\backslash \{n_1, \ldots, n_k\}~~
+					j \notin \{n_1, \ldots, n_k\}}
+				{\Gamma \proves \diamond j~e : 
+				 (\tau_1, \ldots, \tau_n)\backslash \{n_1, \ldots, n_k, j\}}
+		\end{equation*}
 
 	\end{enumerate}
 
