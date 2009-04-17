@@ -250,6 +250,7 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 		
 		\begin{enumerate}
 		\item Preservation Lemma
+
 	The Preservation Lemma states that for a typed expression $e$, if $e$ can be stepped to $e'$ then $e'$ has the same type as $e$:
 
 		\begin{equation*}
@@ -263,14 +264,17 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 	\begin{itemize}
 	
 	\item
-	{\em Case \textbf{malloc}:} $e = \textbf{malloc}~\tau_1 * \ldots * \tau_n, ~ e'= (\textbf{null}, \ldots, \textbf{null})$. Assume
+	{\em Case \textbf{malloc}:} $e = \textbf{malloc}~\tau_1 * \ldots * \tau_n, ~ e'= (\textbf{null}, \ldots, \textbf{null})$. 
+
 	\[
 		\proves \textbf{malloc}~\tau_1 * \ldots * \tau_n: (\tau_1,\ldots,\tau_n)\backslash\{1,\ldots,n\}
 	\]
-	By the definition of $\textbf{malloc}$ we have
-	\[
-		\proves (\textbf{null}, \ldots, \textbf{null}):  (\tau_1,\ldots,\tau_n)\backslash\{1,\ldots,n\}
-	\]
+	By the definition of $\textbf{malloc}$ it returns a fully uninitialized tuple 
+with the type $(\tau_1,\ldots,\tau_n)\backslash\{1,\ldots,n\}$ thus evaluating a \textbf{malloc} preserves the type of the expression.
+
+%	\[
+%		\proves (\textbf{null}, \ldots, \textbf{null}):  (\tau_1,\ldots,\tau_n)\backslash\{1,\ldots,n\}
+%	\]
 
 	\smallskip
 	
