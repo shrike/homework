@@ -6,6 +6,8 @@
 \usepackage{611}
 \usepackage{proof}
 \usepackage{stmaryrd}
+\usepackage{pst-tree}
+
 
 \makeatletter
 \def\maketitle{%
@@ -45,19 +47,268 @@
   %--------------------
   % *** Problem 1 *** %
   %--------------------
-  \item
+  \item \textbf{Strong normalization}
   %--------------------
   % *** Problem 2 *** %
   %--------------------
-  \item
+  \item \textbf{Encoding sum and product types in the polymorphic lambda calculus}
+
   %--------------------
   % *** Problem 3 *** %
   %--------------------
-  \item
+  \item \textbf{Subtyping and recursion}
+  \begin{enumerate}
+	  % --- 3a. ---
+	  \item
+	  For type $A$ the regular tree looks like this:
+	  
+	  \begin{center}
+	  \pstree[nodesep=4pt,levelsep=6ex,treesep=2em]{\TR{$\rightarrow$}}
+				{
+			    \TR{1}
+			    \pstree[nodesep=4pt,levelsep=6ex,treesep=2em]{\TR{$\rightarrow$}}
+					{
+				    \TR{1}
+				    \pstree[nodesep=4pt,levelsep=6ex,treesep=2em]{\TR{$\rightarrow$}}
+						{
+					    \TR{1}
+					    \TR{\ldots}
+						}
+					}
+				}
+				\end{center}
+				
+			For type $B$ the regular tree looks in exactly the same way, i.e.\ like this:
+			\begin{center}
+	  	\pstree[nodesep=4pt,levelsep=6ex,treesep=2em]{\TR{$\rightarrow$}}
+				{
+			    \TR{1}
+			    \pstree[nodesep=4pt,levelsep=6ex,treesep=2em]{\TR{$\rightarrow$}}
+					{
+				    \TR{1}
+				    \pstree[nodesep=4pt,levelsep=6ex,treesep=2em]{\TR{$\rightarrow$}}
+						{
+					    \TR{1}
+					    \TR{\ldots}
+						}
+					}
+				}
+			\end{center}
+				
+	  	Below we show that $A\le B$. To keep the proof readable we only show in the premise of the rule derivations the newly added subtyping relations to the context $S$, and use $\ldots$ to denote the ones carried over from the previous step. We have denoted by (\textsc{FN}), (\textsc{Refl}) and (\textsc{Unf}) the rules for typing a function, for inferring that a type is a subtype of itself, and the one used for terminating the unfolding:
+	  	\[
+	  		\RuleSide
+	  		{S\proves\tau_1'\le\tau_1\quad S\proves\tau_2\le\tau_2'}
+	  		{S\proves \tau_1\rightarrow\tau_2\le\tau_1'\rightarrow\tau_2'}
+	  		{(\textsc{FN})}
+	  	\]
+	  	\[
+	  		\RuleSide
+	  		{}
+	  		{S\proves \tau \le\tau}
+	  		{(\textsc{Refl})}
+	  	\]
+	  	\[
+	  		\RuleSide
+	  		{}
+	  		{S \tau_1 \le\tau_2 \proves \tau_1 \le\tau_2}
+	  		{(\textsc{Unf})}
+	  	\]
+	  	
+	  	Then the proof derivation for $A\le B$ looks like this:
+	  	\begin{footnotesize}
+			\begin{equation*}
+			 \RuleSide
+			 % premise
+			 {
+				 \RuleSide
+				 {\RuleSide
+				 	{
+				 		R_2\quad\quad
+					 	\RuleSide
+					 	{
+					 		\RuleSide
+					 		{
+					 			R_1 \quad\quad
+					 			\RuleSide{}
+					 			{
+						 		S,\ldots
+						 	\proves \m{\alpha}{(1\rightarrow \alpha)}
+						 					\le \m{\beta}{1\rightarrow (1\rightarrow \beta)}
+						 		}{(\textsc{Unf})}
+					 		}
+					 		{S,\ldots, \m{\alpha}{(1\rightarrow \alpha)}
+					 					\le 1\rightarrow \m{\beta}{1\rightarrow (1\rightarrow \beta)}
+					 	\proves 1\rightarrow \m{\alpha}{(1\rightarrow \alpha)}
+					 					\le 1\rightarrow \m{\beta}{1\rightarrow (1\rightarrow \beta)}}
+					 		{(\textsc{FN})}				 		
+					 	}
+					 	{S,\ldots
+					 	\proves \m{\alpha}{(1\rightarrow \alpha)}
+					 					\le 1\rightarrow \m{\beta}{1\rightarrow (1\rightarrow \beta)}}
+					 	{\textsc{(RecL)}}
+				 	}
+				 	{S, \ldots, 1\rightarrow \m{\alpha}{(1\rightarrow \alpha)}
+				 						  \le \m{\beta}{1\rightarrow (1\rightarrow \beta)}
+				 			\proves 1\rightarrow \m{\alpha}{(1\rightarrow \alpha)}
+				 						  \le 1\rightarrow (1\rightarrow \m{\beta}{1\rightarrow (1\rightarrow \beta)})}
+				 	{(FN)}
+				 }
+				 {S, \m{\alpha}{1\rightarrow \alpha} \le \m{\beta}{1\rightarrow (1\rightarrow \beta)}
+				 			\proves 1\rightarrow \m{\alpha}{(1\rightarrow \alpha)}
+				 						  \le \m{\beta}{1\rightarrow (1\rightarrow \beta)}}
+				 	{\textsc{(RecR)}}
+			 }
+			 % conclusion
+			 {S\proves \m{\alpha}{1\rightarrow \alpha} \le \m{\beta}{1\rightarrow (1\rightarrow \beta)}}
+			 % side
+			 {(\textsc{RecL})}
+			\end{equation*}
+	  	\end{footnotesize}
+	  	
+	  	In the last step we can apply the end-of-unfolding rule (\textsc{Unf}) since the subtyping we want to prove $()$ was added to the context $S$ in the first application of the $(\textsc{RecL})$ rule. To make the derivation fit in the page we have denoted by $R_1$ and $R_2$ the subderivations of the following kind, necessary to prove subtyping of function types:
+	  	\[\RuleSide{}
+					 	{S,\ldots\proves 1\le 1}
+					 	{(\textsc{Refl})}
+			\]
+			We can prove that $B\le A$ in a similar way, the important part being that for removing $\mu$-s on the left- and right-hand side we need to apply rules (\textsc{RecL}) and (\textsc{RecR}), respectively, and use the function rule (\textsc{FN}) to infer subtyping of function types.
+			
+		\medskip
+		
+	  % --- 3b. ---
+	  \item
+		\begin{enumerate}
+		
+			% --- 3b.(i) ---
+			\item True
+			
+			We can show the subtyping holds with the following derivation:
+			\begin{footnotesize}
+			\begin{equation*}
+				\RuleSide
+				{
+					\RuleSide
+					{
+						\RuleSide
+						{
+							\RuleSide
+							{}
+							{
+								S,\ldots
+								\proves\m{P}{\{x:P\}}\le \m{Q}{\{x:Q\}}
+							}
+							{(\textsc{Unf})}
+						}
+						{
+							S,\ldots, \{x:\m{P}{\{x:P\}}\}\le\m{Q}{\{x:Q\}}
+							\proves\{x:\m{P}{\{x:P\}}\}\le \{x:\m{Q}{\{x:Q\}}\}
+						}
+						{}
+					}
+					{
+						S,\m{P}{\{x:P\}}\le\m{Q}{\{x:Q\}}
+						\proves\{x:\m{P}{\{x:P\}}\}\le\m{Q}{\{x:Q\}}
+					}
+					{(\textsc{RecR})}
+				}
+				{S\proves\m{P}{\{x:P\}}\le\m{Q}{\{x:Q\}}}
+				{(\textsc{RecL})}
+			\end{equation*}
+			\end{footnotesize}
+			
+			Again, in the last step we were able to apply the end-of-unfolding rule since we added to the context $S$ the subtyping relation we want to derive in the application of the $(\textsc{RecL})$ rule.
+			
+			\medskip
+			
+			% --- 3b.(ii) ---						
+			\item True
+			
+			Let $s_1, s_2$ denote the following subtyping relations:
+			
+			\begin{eqnarray*}
+				s_1 & = & \m{P}{\{mv:\textbf{int}\rightarrow P, y: \textbf{int}\}}
+					\le\m{Q}{\{mv:\textbf{int}\rightarrow Q\}}\\
+				s_2 & = & 
+					\{mv:\textbf{int}\rightarrow \m{P}{\{mv:\textbf{int}\rightarrow P, y: \textbf{int}\}}, y: \textbf{int}\}
+					\le\m{Q}{\{mv:\textbf{int}\rightarrow Q\}}\\
+			\end{eqnarray*}
+			
+			\begin{footnotesize}
+			\begin{equation*}
+				\RuleSide
+				{
+					\RuleSide
+					{
+						\RuleSide
+						{
+							\RuleSide
+							{
+								\RuleSide{}
+								{S,s_1,s_2 \proves \textbf{int}\le\textbf{int}}
+								{(\textsc{Refl})}
+								\quad
+								\RuleSide
+								{
+								}
+								{
+									S,s_1,s_2
+									\proves \m{P}{\{mv:\textbf{int}\rightarrow P,
+																y: \textbf{int}\}}
+									\le \m{Q}{\{mv:\textbf{int}\rightarrow Q\}}
+								}
+								{(\textsc{Unf})}
+							}
+							{
+							S,s_1,s_2
+							\proves \textbf{int}\rightarrow \m{P}{\{mv:\textbf{int}\rightarrow P, y: \textbf{int}\}}
+						\le\textbf{int}\rightarrow \m{Q}{\{mv:\textbf{int}\rightarrow Q\}}
+							}
+							{(\textsc{Rec})}
+						}
+						{
+						S,s_1,s_2
+						\proves \{mv:\textbf{int}\rightarrow \m{P}{\{mv:\textbf{int}\rightarrow P, y: \textbf{int}\}}, y: \textbf{int}\}
+					\le\{mv:\textbf{int}\rightarrow \m{Q}{\{mv:\textbf{int}\rightarrow Q\}}\}
+						}
+						{}
+					}
+					{
+						S, s_1
+						\proves \{mv:\textbf{int}\rightarrow \m{P}{\{mv:\textbf{int}\rightarrow P, y: \textbf{int}\}}, y: \textbf{int}\}
+					\le\m{Q}{\{mv:\textbf{int}\rightarrow Q\}}
+					}
+					{(\textsc{RecR})}
+				}
+				{S\proves
+					\m{P}{\{mv:\textbf{int}\rightarrow P, y: \textbf{int}\}}
+					\le\m{Q}{\{mv:\textbf{int}\rightarrow Q\}}}
+				{(\textsc{RecL})}
+			\end{equation*}
+			\end{footnotesize}
+			
+			In the last step we can apply the end-of-unfolding rule since the relationship we want to derive is exactly $s_1$ from above, which was added in the context in the bottom-most derivation step.
+			
+			% --- 3b.(iii) ---
+			\item False
+			
+			% --- 3b.(iv) ---
+			\item False
+			
+			% --- 3b.(v) ---
+			\item True
+		\end{enumerate}
+		\medskip
+		
+	  % --- 3c. ---
+	  \item
+			
+	\end{enumerate}
+	
   %--------------------
   % *** Problem 4 *** %
   %--------------------
-  \item
+  \item \textbf{Existential types}
+
 \end{enumerate}
 
 \end{document}
