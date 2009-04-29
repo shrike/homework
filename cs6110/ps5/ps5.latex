@@ -154,6 +154,12 @@
       \end{array}
 
       \end{enumerate}
+
+    \item 
+      \begin{enumerate}
+        \item $\tau_1 * \tau_2$ should be mapped to $\forall{\alpha}.(\tau_1 \rightarrow \tau_2 \rightarrow \alpha) \rightarrow \alpha$
+        \item $\tau_1 + \tau_2$ should be mapped to $\forall{\alpha}.(\tau_1 \rightarrow \alpha) \rightarrow (\tau_2 \rightarrow \alpha) \rightarrow \alpha$
+      \end{enumerate}
   \end{enumerate}
 
   %--------------------
