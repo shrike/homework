@@ -8,6 +8,9 @@
 \usepackage{stmaryrd}
 \usepackage{pst-tree}
 
+\newcommand\case[3]{\ensuremath{\textbf{case}~#1~\textbf{of}~x.#2 \mid y.#3}}
+\newcommand\inl[2]{\ensuremath{\textbf{inl}_{#1}#2}}
+\newcommand\inr[2]{\ensuremath{\textbf{inr}_{#1}#2}}
 
 \makeatletter
 \def\maketitle{%
@@ -48,6 +51,68 @@
   % *** Problem 1 *** %
   %--------------------
   \item \textbf{Strong normalization}
+
+  \begin{enumerate}
+  \item Strong normalization of $\lambda^{\rightarrow +}$
+
+  We begin by extending the definition of $SN$ with the case for $\tau_1 + \tau_2$. Note that there are only two conditions.
+
+  \begin{equation*}
+    SN_{\tau_1 + \tau_2}(e) \iff \proves e : \tau_1 + \tau_2 \land e \stepsto
+  \end{equation*}
+
+  Next, we extend the proof for preservation of the $SN_{\tau}$ property when we walk either forward or backward in the evaluation sequence (\textbf{Lemma 2}) with the case for $\tau = \tau_1 + \tau_2$. Assume $\proves e : \tau_1 + \tau_2 \land e \stepsone e' \land SN_{\tau_1 + \tau_2}(e')$; we need to show $SN_{\tau_1 + \tau_2}(e)$. The proof is identical to the proof for the case $\tau = B$ because we have no third condition: $SN_{\tau_1 + \tau_2}(e')$ means $e'$ converges, but since $e \stepsone e'$ then $e$ converges as well; from $\proves e : \tau_1 + \tau_2$ and $e \stepsto$ we conclude $SN_{\tau_1 + \tau_2}(e)$.
+
+  Finally, we need to extend the proof of \textbf{Lemma 4} which states that
+
+  \begin{equation*}
+    \Gamma \proves e : \tau \land \gamma \models \Gamma \implies \proves SN_{\tau} (\gamma (e))
+  \end{equation*}
+
+  with cases for proving the type of a \textbf{case} statement and the types of \textbf{inl} and \textbf{inr}.
+
+  \begin{itemize}
+  \item Case $\Gamma \proves \case{e_0}{e_1}{e_2} : \tau_3$
+
+    We know from the typing derivation that the premises $\Gamma \proves e_0 : \tau_1 + \tau_2$, $\Gamma, x : \tau_1 \proves e_1 : \tau_3$ and $\Gamma, y : \tau_2 \proves e_2 : \tau_3$ hold for some $\tau_1$ and $\tau_2$.
+
+    Now, lets consider $\gamma (\case{e_0}{e_1}{e_2})$. That's equivalent to pushing the substitution to the individual terms: $\case{\gamma(e_0)}{\gamma(e_1)}{\gamma(e_2}))$. The typing derivation for $e_0$ is a subderivation and thus we can apply the induction hypothesis yielding $SN_{\tau_1 + \tau_2}(\gamma(e_0))$. We now know that $\gamma(e_0) \stepsto$ and since $e_0 : \tau_1 + \tau_2$ then either $\gamma(e_0) \stepsto \inl{\tau_1 + \tau_2}{v_1}$ or $\gamma(e_0) \stepsto \inr{\tau_1 + \tau_2}{v_2}$ for some $v_1 : \tau_1$ and $v_2 : \tau_2$.
+
+    Consider:
+    
+    \begin{equation*}
+        \case{\gamma(e_0)}{\gamma(e_1)}{\gamma(e_2)} \stepsone^* 
+        \case{\inl{\tau_1 + \tau_2}{v_1}} {\gamma(e_1)} {\gamma(e_2)}
+    \end{equation*}
+    
+    By the definition of the \textbf{case} statement:
+    
+    \begin{equation*}
+        \case{\inl{\tau_1 + \tau_2}{v_1}} {\gamma(e_1)} {\gamma(e_2)} \stepsone 
+        \subst{\gamma(e_1)}{v_1}{x}
+    \end{equation*}
+
+    We can extend $\gamma$ with the substitution $v_1/x$ and we get:
+
+    \begin{equation*}
+        \gamma(\case{e_0}{e_1}{e_2}) \stepsone^* 
+        \gamma[x \mapsto v_1](e_1)
+    \end{equation*}
+
+    Now note that $\gamma[x \mapsto v_1] \models \Gamma, x : \tau_1$ since $v_1 : \tau_1$. We also have $\proves e_1 : \tau_3$ therefore we can conclude $SN_{\tau_3}(\gamma[x \mapsto v_1](e_1))$. Applying \textbf{Lemma 2} multiple times to walk back in the evaluation sequence we obtain that $SN_{\tau_3}(\gamma(\case{e_0}{e_1}{e_2}))$. Similar reasoning can be used for the case when $\gamma(e_0) \stepsto \inr{\tau_1 + \tau_2}{v_2}$.
+
+  \item Case $\Gamma \proves \inl{\tau_1+\tau_2}{e} : \tau_1 + \tau_2$
+
+    We know from the typing derivations that the premise $\Gamma \proves e : \tau_1$ holds. Furthermore the typing derivation for $e$ is a subderivation thus we can apply the induction hypothesis and obtain $SN_{\tau_1}(\gamma(e))$ which means that $\gamma(e) \stepsto v$ for some value $v$. We know that $\gamma(\inl{\tau_1 + \tau_2}{e}) = \inl{\tau_1 + \tau_2}{\gamma(e)}$. Since $\gamma(e) \stepsto v$ then $\gamma(\inl{\tau_1 + \tau_2}{e}) \stepsone^* \inl{\tau_1+\tau_2}{v}$ and since $\inl{\tau_1+\tau_2}{v}$ is a value then we can conclude that $\gamma(\inl{\tau_1 + \tau_2}{e}) \stepsto$ and thus we have $SN_{\tau_1 + \tau_2}(\gamma(\inl{\tau_1 + \tau_2}{e}))$.
+
+  \item Case $\Gamma \proves \inr{\tau_1+\tau_2}{e} : \tau_1 + \tau_2$
+
+  Proof is equivalent to the proof shown in the previous case.
+  \end{itemize}
+
+
+  \end{enumerate}
+
   %--------------------
   % *** Problem 2 *** %
   %--------------------
@@ -111,7 +176,7 @@
 	  	\[
 	  		\RuleSide
 	  		{}
-	  		{S \tau_1 \le\tau_2 \proves \tau_1 \le\tau_2}
+	  		{S, \tau_1 \le\tau_2 \proves \tau_1 \le\tau_2}
 	  		{(\textsc{Unf})}
 	  	\]
 	  	
