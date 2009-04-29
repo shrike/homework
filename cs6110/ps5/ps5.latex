@@ -110,6 +110,7 @@
   Proof is equivalent to the proof shown in the previous case.
   \end{itemize}
 
+  \item Proof fails if the language has recursive types
 
   \end{enumerate}
 
@@ -117,6 +118,43 @@
   % *** Problem 2 *** %
   %--------------------
   \item \textbf{Encoding sum and product types in the polymorphic lambda calculus}
+
+  \begin{enumerate}
+  \item 
+      \begin{enumerate}
+      \item Formula equivalent to $A \land B$
+
+      Consider the formula $\forall{p}. (A \implies B \implies p) \implies p$.
+
+      \medskip
+
+      \hspace{1em} \begin{array}[t]{l}
+        \forall{p}. (A \implies B \implies p) \implies p = \\
+        \forall{p}. \neg(A \implies B \implies p) \lor p = \\
+        \forall{p}. \neg(\neg A \lor (B \implies p)) \lor p = \\
+        \forall{p}. \neg(\neg A \lor (\neg B \lor p)) \lor p = \\
+        \forall{p}. (A \land \neg(\neg B \lor p)) \lor p = \\
+        \forall{p}. (A \land B \land \neg p) \lor p = \\
+        A \land B
+      \end{array}
+
+      \item Formula equivalent to $A \lor B$
+
+      Consider the formula $\forall{p}. (A \implies p) \implies (B \implies p) \implies p$.
+
+     \medskip
+
+      \hspace{1em} \begin{array}[t]{l}
+        \forall{p}. (A \implies p) \implies (B \implies p) \implies p = \\
+        \forall{p}. (\neg A \lor p) \implies (\neg B \lor p) \implies p = \\
+        \forall{p}. (\neg A \lor p) \implies (\neg (\neg B \lor p) \lor p) = \\
+        \forall{p}. \neg (\neg A \lor p) \lor (\neg (\neg B \lor p) \lor p) = \\
+        \forall{p}. (A \land \neg p) \lor (B \land \neg p) \lor p = \\
+        A \lor B
+      \end{array}
+
+      \end{enumerate}
+  \end{enumerate}
 
   %--------------------
   % *** Problem 3 *** %
