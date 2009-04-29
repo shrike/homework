@@ -189,11 +189,11 @@ Consider $c = \IF~x=1~\THEN~x:=2~\ELSE~flag:=\FALSE$, $b = flag$ and $A = x=1$. 
 		{\{A\}\DO~c~\UNTIL~b\{C \land b\}}
 \end{equation*}
 
-	We already have the partial correction assertion $\{C \land \neg b\}c\{C\}$. Using the rule of consequence as we did in the first part of this problem we can obtain the partial correction assertion $\{C\}c\{C\}$. Finally, if we let $A = C$ we get a valid and usable rule for the $\DO~\UNTIL$ loop:
+Note that in the previous part we showed that using the rules of consequence we can start with a rule of the form $\{C\}c\{C\}$ and get $\{C \land \neg b\}c\{C\}$. Thus if we let $A = C$ we can get the following sound and useful rule:
 
 \begin{equation*}
 	\Rule
-		{\{C \land \neg b\}c\{C\}}
+		{\{C\}c\{C\}}
 		{\{C\}\DO~c~\UNTIL~b\{C \land b\}}
 \end{equation*}
 
