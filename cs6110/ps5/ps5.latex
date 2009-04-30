@@ -2,28 +2,29 @@
 
 \usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage[left=0.8in,right=0.8in,top=0.8in,bottom=0.8in]{geometry}
 \usepackage{611}
 \usepackage{proof}
 \usepackage{stmaryrd}
 \usepackage{pst-tree}
+\usepackage[left=0.6in,right=0.8in,top=0.8in,bottom=0.8in]{geometry}
 
 \newcommand\case[3]{\ensuremath{\textbf{case}~#1~\textbf{of}~x.#2 \mid y.#3}}
 \newcommand\inl[2]{\ensuremath{\textbf{inl}_{#1}#2}}
 \newcommand\inr[2]{\ensuremath{\textbf{inr}_{#1}#2}}
+\newcommand\sumt{\ensuremath{\tau_1+\tau_2}}
 
 \makeatletter
 \def\maketitle{%
 
     \begin {center}
     \bfseries
-    \begin{tabular}{|rcl|}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} |rcl|}
         \hline
         & \@author & \\
         \@title & & \@set \\
         \@subtitle & & Due: \@duedate \\
         \hline
-    \end{tabular}
+    \end{tabular*}
     \end {center}
 
 } % maketitle
@@ -128,7 +129,7 @@
 
       \medskip
 
-      \hspace{1em} \begin{array}[t]{l}
+      \hspace{0.1em} \begin{array}[t]{l}
         \forall{p}. (A \implies B \implies p) \implies p = \\
         \forall{p}. \neg(A \implies B \implies p) \lor p = \\
         \forall{p}. \neg(\neg A \lor (B \implies p)) \lor p = \\
@@ -144,7 +145,7 @@
 
      \medskip
 
-      \hspace{1em} \begin{array}[t]{l}
+      \hspace{0.1em} \begin{array}[t]{l}
         \forall{p}. (A \implies p) \implies (B \implies p) \implies p = \\
         \forall{p}. (\neg A \lor p) \implies (\neg B \lor p) \implies p = \\
         \forall{p}. (\neg A \lor p) \implies (\neg (\neg B \lor p) \lor p) = \\
@@ -157,9 +158,41 @@
 
     \item 
       \begin{enumerate}
-        \item $\tau_1 * \tau_2$ should be mapped to $\forall{\alpha}.(\tau_1 \rightarrow \tau_2 \rightarrow \alpha) \rightarrow \alpha$
-        \item $\tau_1 + \tau_2$ should be mapped to $\forall{\alpha}.(\tau_1 \rightarrow \alpha) \rightarrow (\tau_2 \rightarrow \alpha) \rightarrow \alpha$
+        \item $\mathcal{T}^+\SB{\tau_1 * \tau_2} = \forall{\alpha}.(\tau_1 \rightarrow \tau_2 \rightarrow \alpha) \rightarrow \alpha$
+        \item $\mathcal{T}^*\SB{\tau_1 + \tau_2} = \forall{\alpha}.(\tau_1 \rightarrow \alpha) \rightarrow (\tau_2 \rightarrow \alpha) \rightarrow \alpha$
       \end{enumerate}
+
+    \item The transalation function $\mathcal{E}^+\SB{\cdot}$
+      \medskip
+
+      \hspace {0.1em} \begin{array}[t]{l}
+        \mathcal{E}^+\SB{\Gamma \proves (e_1, e_2) : \tau_1 * \tau_2} = 
+        \Lam{\alpha}{\lam{f : \tau_1 \rightarrow \tau_2 \rightarrow \alpha}}
+          {f~
+            (\mathcal{E}^+\SB{\Gamma \proves e_1 : \tau_1})~
+            (\mathcal{E}^+\SB{\Gamma \proves e_2 : \tau_2})} \\
+        \mathcal{E}^+\SB{\Gamma \proves \#1~e : \tau_1} = 
+        \big((\mathcal{E}^+\SB{\Gamma \proves e : \tau_1 * \tau_2})~
+        \tau_1\big)~
+        \lam{a : \tau_1}{\lam{b : \tau_2}{a}}
+      \end{array}
+
+    \item The transalation function $\mathcal{E}^*\SB{\cdot}$
+      \medskip
+
+      \hspace {0.1em} \begin{array}[t]{l}
+        \mathcal{E}^+\SB{\Gamma \proves \inl{\sumt}{e} : \sumt} = 
+        \Lam{\alpha}{
+          \lam{f : \tau_1 \rightarrow \alpha}{
+            \lam{g : \tau_2 \rightarrow \alpha}{
+              f~\mathcal{E}^+\SB{\Gamma \proves e : \tau_1}}}} \\
+        \mathcal{E}^+\SB{\Gamma \proves \case{e_0}{e_1}{e_2} : \tau_3} = 
+        \mathcal{E}^+\SB{\Gamma \proves e_0 : \sumt}~
+        \tau_3~
+        (\lam{x}{\mathcal{E}^+\SB{\Gamma \proves e_1 : \tau_3}})~
+        (\lam{y}{\mathcal{E}^+\SB{\Gamma \proves e_2 : \tau_3}})
+      \end{array}
+
   \end{enumerate}
 
   %--------------------
