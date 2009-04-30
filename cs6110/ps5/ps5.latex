@@ -778,10 +778,11 @@ Here is the subtree B:
 			\begin{eqnarray*}
 				&& \mathrm{let ~ rec} ~ o_a:A.\mathrm{fold}_A{\{a = \textbf{ref} ~ o_a, y: 5\}}\\
 				&& \mathrm{in ~ let ~ rec} ~ o_b:B.\mathrm{fold}_B{\{a = \textbf{ref} ~ o_a\}}\\
-				&& \mathrm{in} ~ (o_b.a = \textbf{ref} ~ o_b; o_a.(!a).y)
+				&& \mathrm{in} ~ \Big(\big(!(o_b.a)\big).a = 
+				\textbf{ref} ~ o_b; \big(!(o_a.a)\big).y\Big)
 			\end{eqnarray*}
 			
-			The code defines an object $o_a$ of type $A$, where $o_a.a$ points to $o_a$ itself. It then defines an object $o_b$ of type $B$ whose $a$ value points to $o_a$. In the last line of the code the $y$ value of $o_b$ is modified to point to itself which effectively modified the $a$ value of $o_a$ to also point to $o_b$ and causes trouble when we attempt to access the $y$ value of the contained $a$ reference.
+			The code defines an object $o_a$ of type $A$, where $o_a.a$ points to $o_a$ itself. It then defines an object $o_b$ of type $B$ whose $a$ value points to $o_a$. In the last line of the code the $a$ value of the $a$ value of $o_b$ is modified to point to $o_b$ which effectively modifies the $a$ value of $o_a$ to also point to $o_b$ and causes trouble when we attempt to access the $y$ value of the contained $a$ reference.
 			
 			% --- 3b.(v) ---
 			\item True
