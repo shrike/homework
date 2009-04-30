@@ -11,7 +11,15 @@
 \newcommand\case[3]{\ensuremath{\textbf{case}~#1~\textbf{of}~x.#2 \mid y.#3}}
 \newcommand\inl[2]{\ensuremath{\textbf{inl}_{#1}#2}}
 \newcommand\inr[2]{\ensuremath{\textbf{inr}_{#1}#2}}
+
 \newcommand\sumt{\ensuremath{\tau_1+\tau_2}}
+
+\newcommand\Gp[1]{\ensuremath{\mathcal{G}^+\SB{#1}}}
+\newcommand\Gs[1]{\ensuremath{\mathcal{G}^*\SB{#1}}}
+\newcommand\Ep[1]{\ensuremath{\mathcal{E}^+\SB{#1}}}
+\newcommand\Es[1]{\ensuremath{\mathcal{E}^*\SB{#1}}}
+\renewcommand\Tp[1]{\ensuremath{\mathcal{T}^+\SB{#1}}}
+\newcommand\Ts[1]{\ensuremath{\mathcal{T}^*\SB{#1}}}
 
 \makeatletter
 \def\maketitle{%
@@ -158,8 +166,8 @@
 
     \item 
       \begin{enumerate}
-        \item $\mathcal{T}^+\SB{\tau_1 * \tau_2} = \forall{\alpha}.(\tau_1 \rightarrow \tau_2 \rightarrow \alpha) \rightarrow \alpha$
-        \item $\mathcal{T}^*\SB{\tau_1 + \tau_2} = \forall{\alpha}.(\tau_1 \rightarrow \alpha) \rightarrow (\tau_2 \rightarrow \alpha) \rightarrow \alpha$
+        \item $\mathcal{T}^+\SB{\tau_1 * \tau_2} = \forall{\alpha}.(\mathcal{T}^+\SB{\tau_1} \rightarrow \mathcal{T}^+\SB{\tau_2} \rightarrow \alpha) \rightarrow \alpha$
+        \item $\mathcal{T}^*\SB{\tau_1 + \tau_2} = \forall{\alpha}.(\mathcal{T}^*\SB{\tau_1} \rightarrow \alpha) \rightarrow (\mathcal{T}^*\SB{\tau_2} \rightarrow \alpha) \rightarrow \alpha$
       \end{enumerate}
 
     \item The transalation function $\mathcal{E}^+\SB{\cdot}$
@@ -167,31 +175,86 @@
 
       \hspace {0.1em} \begin{array}[t]{l}
         \mathcal{E}^+\SB{\Gamma \proves (e_1, e_2) : \tau_1 * \tau_2} = 
-        \Lam{\alpha}{\lam{f : \tau_1 \rightarrow \tau_2 \rightarrow \alpha}}
+        \Lam{\alpha}{\lam{f : \mathcal{T}^+\SB{\tau_1} \rightarrow \mathcal{T}^+\SB{\tau_2} \rightarrow \alpha}}
           {f~
             (\mathcal{E}^+\SB{\Gamma \proves e_1 : \tau_1})~
             (\mathcal{E}^+\SB{\Gamma \proves e_2 : \tau_2})} \\
         \mathcal{E}^+\SB{\Gamma \proves \#1~e : \tau_1} = 
         \big((\mathcal{E}^+\SB{\Gamma \proves e : \tau_1 * \tau_2})~
-        \tau_1\big)~
-        \lam{a : \tau_1}{\lam{b : \tau_2}{a}}
+        [\mathcal{T}^+\SB{\tau_1}]\big)~
+        \lam{a : \mathcal{T}^+\SB{\tau_1}}{\lam{b : \mathcal{T}^+\SB{\tau_2}}{a}}
       \end{array}
 
     \item The transalation function $\mathcal{E}^*\SB{\cdot}$
       \medskip
 
       \hspace {0.1em} \begin{array}[t]{l}
-        \mathcal{E}^+\SB{\Gamma \proves \inl{\sumt}{e} : \sumt} = 
+        \mathcal{E}^*\SB{\Gamma \proves \inl{\sumt}{e} : \sumt} = 
         \Lam{\alpha}{
-          \lam{f : \tau_1 \rightarrow \alpha}{
-            \lam{g : \tau_2 \rightarrow \alpha}{
-              f~\mathcal{E}^+\SB{\Gamma \proves e : \tau_1}}}} \\
-        \mathcal{E}^+\SB{\Gamma \proves \case{e_0}{e_1}{e_2} : \tau_3} = 
-        \mathcal{E}^+\SB{\Gamma \proves e_0 : \sumt}~
-        \tau_3~
-        (\lam{x}{\mathcal{E}^+\SB{\Gamma \proves e_1 : \tau_3}})~
-        (\lam{y}{\mathcal{E}^+\SB{\Gamma \proves e_2 : \tau_3}})
+          \lam{f : \mathcal{T}^*\SB{\tau_1} \rightarrow \alpha}{
+            \lam{g : \mathcal{T}^*\SB{\tau_2} \rightarrow \alpha}{
+              f~\mathcal{E}^*\SB{\Gamma \proves e : \tau_1}}}} \\
+        \mathcal{E}^*\SB{\Gamma \proves \case{e_0}{e_1}{e_2} : \tau_3} = \\
+        \hspace{2em}
+        (\mathcal{E}^*\SB{\Gamma \proves e_0 : \sumt}~
+        [\mathcal{T}^*\SB{\tau_3}])~
+        (\lam{x}{\mathcal{E}^*\SB{\Gamma \proves e_1 : \tau_3}})~
+        (\lam{y}{\mathcal{E}^*\SB{\Gamma \proves e_2 : \tau_3}})
       \end{array}
+
+    \item Translations are well-formed
+
+      Due to lack of space I am going to abbreviate the type $\Tp{\tau_1} \rightarrow \Tp{\tau_2} \rightarrow \alpha$ by simply writing a $T$.
+      \medskip
+
+      \begin{small}
+      \hspace {-4em} \begin{array}[t]{l}
+\Rule
+{
+  \Rule
+  {
+    \Rule
+    {
+      \Rule { }
+      {
+      \alpha; \Gp{\Gamma}, f : T \proves f : T
+      } \quad
+      \Rule { }
+      {
+      \alpha; \Gp{\Gamma}, f : T \proves
+      \Ep{\Gamma \proves e_1 : \tau_1} : \Tp{\tau_1}
+      } \quad
+      \Rule { }
+      {
+      \alpha; \Gp{\Gamma}, f : T \proves
+      \Ep{\Gamma \proves e_2 : \tau_2} : \Tp{\tau_2}
+      }
+    }
+    {
+      \alpha; \Gp{\Gamma}, f : T \proves
+      {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~ 
+      (\Ep{\Gamma \proves e_2 : \tau_2})} : \alpha
+    }
+  }
+  {
+    \alpha; \Gp{\Gamma} \proves
+    \lam{f : T} {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~ 
+    (\Ep{\Gamma \proves e_2 : \tau_2})} :
+    (\Tp{\tau_1} \rightarrow \Tp{\tau_2} \rightarrow \alpha) \rightarrow \alpha
+  }
+}
+% Bottom starts here
+{
+  \emptyset; \Gp{\Gamma} \proves 
+  \Lam{\alpha}{
+  \lam{f : T} {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~
+  (\Ep{\Gamma \proves e_2 : \tau_2})}} :
+  \forall{\alpha}.(\Tp{\tau_1} \rightarrow 
+  \Tp{\tau_2} \rightarrow \alpha) \rightarrow \alpha
+}
+      \end{array}
+
+      \end{small}
 
   \end{enumerate}
 
