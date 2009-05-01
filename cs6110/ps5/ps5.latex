@@ -850,7 +850,7 @@ Here is the subtree B:
   \item \textbf{Existential types}
 	\begin{enumerate}
 		\item 		
-  	We will encode the type of the tuple of free variables in the translation of the $\lambda$-expression using an existential type $\alpha$:
+  	We will encode the type of the tuple of free variables in the translation of the $\lambda$-expression using an existential type $\alpha$, thus the function type is translated as follows:
 		\[
 			\Tr{T}{\tau\arrow\tau'} = \exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha
 		\]
@@ -863,17 +863,19 @@ Here is the subtree B:
 			\begin{small}
 				\begin{eqnarray*}
 					\SB{\Gamma\proves\lam{x:\tau}{e}:\tau\arrow\tau'} &=&
-					\left[(\Tr{T}{\Gamma(x_1)*\Gamma(x_2)*\ldots}),\right.\\
-					&&(\lam{x:\Tr{T}{\tau}}{\textrm{let} ~ x_1=\#1p ~ \mathrm{in ~ let} ~ x_2=\#2p ~ \mathrm{in} ~ \ldots \SB{\Gamma, x:\Tr{T}{\tau}\proves e:\Tr{T}{\tau'}},\\
-					&&\left. (x_1,x_2,\ldots)}) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
+					\left[(\Tr{T}{\Gamma(x_1)*\ldots *\Gamma(x_n)}),\right.\\
+					&&(\lam{x:\Tr{T}{\tau}}{\textrm{let} ~ x_1:\Tr{T}{\Gamma(x_1)}=\#1p ~ \mathrm{in} \ldots ~ x_n:\Tr{T}{\Gamma(x_n)}=\#np ~ \mathrm{in} ~\\
+					&&\SB{\Gamma, x:\Tr{T}{\tau}\proves e:\Tr{T}{\tau'}},\left. (x_1,\ldots,x_n)}) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
 				\end{eqnarray*}
 			\end{small}
 			
 			\medskip
 			
+			\item
 			\begin{small}
 				\begin{eqnarray*}
-					\SB{\Gamma\proves e_1 ~ e_2:\tau'} &=&
+					\SB{\Gamma\proves e_1 ~ e_2:\tau'}
+						&=& \mathrm{let} ~ [\alpha,x] = \SB{\Gamma\proves e_1:\tau\arrow\tau'} ~ \mathrm{in} ~ (\#1 ~ x) ~(\#2 ~ x) ~\SB{\Gamma\proves e_2:\tau}
 				\end{eqnarray*}
 			\end{small}
 		\end{enumerate}
