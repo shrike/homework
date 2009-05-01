@@ -841,7 +841,28 @@ Here is the subtree B:
 		
 	  % --- 3c. ---
 	  \item
-			
+		We will define a coercion function that takes a term of type $\m{\alpha}{\tau'}$ and produces a term of type $\tau'$. The coercion function will also take the subtyping environment $S$ which contains pairs $(\tau_1,\tau_2), \tau_i::\mathrm{type}$ such that $\tau_1\le\tau_2$. We will assume to have a function $\Theta_0(\tau\le\tau',S):\tau * S \arrow\tau'$ which implements the rule for the end of the unfolding of recursive types:
+		\[
+			\Rule{}{S, \tau_1\le\tau_2 \proves\tau_1\le\tau_2}
+		\]
+		
+		The coercion function for \textsc{RecL} then is:
+		\begin{eqnarray*}
+			\Theta\SB{\m{\alpha}{\tau}\le\tau'}
+			&\definedas&\lam{x: \m{\alpha}{\tau}}{\lam{S}\\
+			&&{\IF~(\m{\alpha}{\tau},\tau')\in S~\THEN~\Theta_0(\m{\alpha}{\tau}\le\tau',S)}~x~S
+			\\&& \ELSE ~ \textbf{rec} ~\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau}}{\alpha}\le\tau')~(\mathrm{unfold}~x)} ~(S\cup\{(\m{\alpha}{\tau},\tau')\})
+		\end{eqnarray*}
+		
+		Similarly, we can define a coercion function for \textsc{RecR} as follows:
+		\begin{eqnarray*}
+			\Theta\SB{\tau\le\m{\alpha}{\tau'}}
+			&\definedas&\lam{x: \tau}{\lam{S}\\
+			&&{\IF~(\tau,\m{\alpha}{\tau'})\in S~\THEN~\Theta_0(\tau\le\m{\alpha}{\tau'},S)~x~S}
+			\\&& \ELSE ~ \textbf{rec} ~\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau'}}{\alpha})~(x)} ~(S \cup \{(\tau,\m{\alpha}{\tau'})\})
+		\end{eqnarray*}
+		
+		\textbf{TODO}: reason recursion is well-founded bla-bla
 	\end{enumerate}
 	
   %--------------------
