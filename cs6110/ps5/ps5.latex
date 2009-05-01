@@ -8,6 +8,8 @@
 \usepackage{pst-tree}
 \usepackage[left=0.6in,right=0.8in,top=0.8in,bottom=0.8in]{geometry}
 
+\renewcommand\Tr[2]{\ensuremath{{\cal #1}\SB{#2}}}
+
 \newcommand\case[3]{\ensuremath{\textbf{case}~#1~\textbf{of}~x.#2 \mid y.#3}}
 \newcommand\inl[2]{\ensuremath{\textbf{inl}_{#1}#2}}
 \newcommand\inr[2]{\ensuremath{\textbf{inr}_{#1}#2}}
@@ -846,7 +848,38 @@ Here is the subtree B:
   % *** Problem 4 *** %
   %--------------------
   \item \textbf{Existential types}
-
+	\begin{enumerate}
+		\item 		
+  	We will encode the type of the tuple of free variables in the translation of the $\lambda$-expression using an existential type $\alpha$:
+		\[
+			\Tr{T}{\tau\arrow\tau'} = \exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha
+		\]
+		
+		\medskip
+		
+		\item
+		\begin{enumerate}		
+			\item
+			\begin{small}
+				\begin{eqnarray*}
+					\SB{\Gamma\proves\lam{x:\tau}{e}:\tau\arrow\tau'} &=&
+					\left[(\Tr{T}{\Gamma(x_1)*\Gamma(x_2)*\ldots}),\right.\\
+					&&(\lam{x:\Tr{T}{\tau}}{\textrm{let} ~ x_1=\#1p ~ \mathrm{in ~ let} ~ x_2=\#2p ~ \mathrm{in} ~ \ldots \SB{\Gamma, x:\Tr{T}{\tau}\proves e:\Tr{T}{\tau'}},\\
+					&&\left. (x_1,x_2,\ldots)}) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
+				\end{eqnarray*}
+			\end{small}
+			
+			\medskip
+			
+			\begin{small}
+				\begin{eqnarray*}
+					\SB{\Gamma\proves e_1 ~ e_2:\tau'} &=&
+				\end{eqnarray*}
+			\end{small}
+		\end{enumerate}
+		
+		
+	\end{enumerate}
 \end{enumerate}
 
 \end{document}
