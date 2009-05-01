@@ -176,16 +176,20 @@
       \medskip
 
       \hspace {0.1em} \begin{array}[t]{l}
-        \mathcal{E}^+\SB{\Gamma \proves (e_1, e_2) : \tau_1 * \tau_2} = 
-        \Lam{\alpha}{\lam{f : \mathcal{T}^+\SB{\tau_1} \rightarrow \mathcal{T}^+\SB{\tau_2} \rightarrow \alpha}}
+        \Ep{\Gamma \proves (e_1, e_2) : \tau_1 * \tau_2} = 
+        \Lam{\alpha}{\lam{f : \Tp{\tau_1} \rightarrow \Tp{\tau_2} \rightarrow \alpha}}
           {f~
-            (\mathcal{E}^+\SB{\Gamma \proves e_1 : \tau_1})~
-            (\mathcal{E}^+\SB{\Gamma \proves e_2 : \tau_2})} \\
+            (\Ep{\Gamma \proves e_1 : \tau_1})~
+            (\Ep{\Gamma \proves e_2 : \tau_2})} \\
         \Ep{\Gamma \proves \#1~e : \tau_1} = 
         \big((\Ep{\Gamma \proves e : \tau_1 * \tau_2})~
         [\Tp{\tau_1}]\big)~
         (\lam{a : \Tp{\tau_1}}{\lam{b : \Tp{\tau_2}}{a}})
       \end{array}
+
+      \medskip
+      Where $f$ is not a free variable in $\Ep{\Gamma \proves e_1 : \tau_1}$ and $\Ep{\Gamma \proves e_2 : \tau_2}$.
+
 
     \item The transalation function $\Es{\cdot}$
       \medskip
@@ -203,6 +207,10 @@
         (\lam{x : \Ts{\tau_1}}{\Es{\Gamma \proves e_1 : \tau_3}})~
         (\lam{y : \Ts{\tau_2}}{\Es{\Gamma \proves e_2 : \tau_3}})
       \end{array}
+
+      \medskip
+
+      Where $f$ and $g$ are not free variables in $\Es{\Gamma \proves e : \tau_1}$.
 
     \item Translations are well-formed
 
