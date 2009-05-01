@@ -788,6 +788,7 @@ Here is the subtree B:
 			
 			% --- 3b.(v) ---
 			\item True
+
 			Let $s_1, s_2$ denote the following subtyping relations:
 			
 			\begin{eqnarray*}
