@@ -875,7 +875,7 @@ Here is the subtree B:
 			\begin{small}
 				\begin{eqnarray*}
 					\SB{\Gamma\proves e_1 ~ e_2:\tau'}
-						&=& \mathrm{let} ~ [\alpha,x] = \SB{\Gamma\proves e_1:\tau\arrow\tau'} ~ \mathrm{in} ~ (\#1 ~ x) ~(\#2 ~ x) ~\SB{\Gamma\proves e_2:\tau}
+						&=& \mathrm{let} ~ [\alpha,x] = \SB{\Gamma\proves e_1:\Tr{T}{\tau}\arrow \Tr{T}{\tau'}} ~ \mathrm{in} ~ (\#1 ~ x) ~(\#2 ~ x) ~\SB{\Gamma\proves e_2:\Tr{T}{\tau}}
 				\end{eqnarray*}
 			\end{small}
 		\end{enumerate}
