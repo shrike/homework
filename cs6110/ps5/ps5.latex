@@ -123,6 +123,8 @@
 
   \item Proof fails if the language has recursive types
 
+  Both the definition of $SN$ and the proof of \textbf{Lemma 2} are inductive in the structure of $\tau$. If recursive types are introduced both of those inductions would not be well-founded.
+
   \end{enumerate}
 
   %--------------------
