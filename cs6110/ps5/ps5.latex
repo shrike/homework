@@ -172,7 +172,7 @@
         \item $\Ts{\tau_1 + \tau_2} = \forall{\alpha}.(\Ts{\tau_1} \rightarrow \alpha) \rightarrow (\Ts{\tau_2} \rightarrow \alpha) \rightarrow \alpha$
       \end{enumerate}
 
-    \item The transalation function $\mathcal{E}^+\SB{\cdot}$
+    \item The transalation function $\Ep{\cdot}$
       \medskip
 
       \hspace {0.1em} \begin{array}[t]{l}
@@ -214,6 +214,14 @@
 
     \item Translations are well-formed
 
+    For this part of the problem, consider an induction on the typing derivation in the source language. The induction hypothesis is as follows:
+
+    \begin{equation*}
+    \Gamma \proves e : \tau \implies
+    \emptyset; \Gp{\Gamma} \proves \Ep{\Gamma \proves e : \tau} : \Tp{\tau}
+    \end{equation*}
+
+
       Due to lack of space I am going to abbreviate the types $\Tp{\tau_1}$, $\Tp{\tau_2}$ and $\Tp{\tau_1} \rightarrow \Tp{\tau_2} \rightarrow \alpha$ by $T_1$, $T_2$ and $T$ respectively.
 
 \begin{small}
@@ -221,106 +229,129 @@
       \begin{equation*}
 \Rule
 {
-  \Rule
-  {
-    \Rule
-    {
-      \Rule { }
-      {
-      \alpha; \Gp{\Gamma}, f : T \proves f : T
-      } \quad
-      \Rule { }
-      {
-      \alpha; \Gp{\Gamma}, f : T \proves
-      \Ep{\Gamma \proves e_1 : \tau_1} : T_1
-      } \quad
-      \Rule { }
-      {
-      \alpha; \Gp{\Gamma}, f : T \proves
-      \Ep{\Gamma \proves e_2 : \tau_2} : T_2
-      }
-    }
-    {
-      \alpha; \Gp{\Gamma}, f : T \proves
-      {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~ 
-      (\Ep{\Gamma \proves e_2 : \tau_2})} : \alpha
-    }
-  }
-  {
-    \alpha; \Gp{\Gamma} \proves
-    \lam{f : T} {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~ 
-    (\Ep{\Gamma \proves e_2 : \tau_2})} :
-    (T) \rightarrow \alpha
-  }
-}
-% Bottom starts here
-{
-  \emptyset; \Gp{\Gamma} \proves 
-  \Lam{\alpha}{
-  \lam{f : T} {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~
-  (\Ep{\Gamma \proves e_2 : \tau_2})}} :
-  \forall{\alpha}. (T) \rightarrow \alpha
-}
-      \end{equation*}
-
-      \hspace{-4em} \begin{array}[t]{l}
-\Rule
-{
-  \Rule
-  {
-    \Rule
-    {
-    }
-    {
-      \emptyset; \Gp{\Gamma} \proves
-      (\Ep{\Gamma \proves e : \tau_1 * \tau_2}) :
-      \forall{\alpha}.
-        (T_1 \rightarrow T_2 \rightarrow \alpha) \rightarrow \alpha
-    }
-    \quad
-    \Rule
-    {
-    }
-    {
-      \emptyset \proves T_1
-    }
-  }
-  {
-    \emptyset; \Gp{\Gamma} \proves 
-    (\Ep{\Gamma \proves e : \tau_1 * \tau_2})~[T_1] :
-    (T_1 \rightarrow T_2 \rightarrow T_1) \rightarrow T_1
-  }
-  \quad
-  \Rule
-  {
     \Rule
     {
       \Rule
       {
+        \Rule
+        {
+          \Rule { }
+          {
+          \alpha; \Gp{\Gamma}, f : T \proves f : T
+          } \quad
+          \Rule {  }
+          {
+          \alpha; \Gp{\Gamma}, f : T \proves
+          \Ep{\Gamma \proves e_1 : \tau_1} : T_1
+          } \quad
+          \Rule { }
+          {
+          \alpha; \Gp{\Gamma}, f : T \proves
+          \Ep{\Gamma \proves e_2 : \tau_2} : T_2
+          }
+        }
+        {
+          \alpha; \Gp{\Gamma}, f : T \proves
+          {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~ 
+          (\Ep{\Gamma \proves e_2 : \tau_2})} : \alpha
+        }
       }
       {
-        \emptyset; \Gp{\Gamma}, a : T_1, b : T_2 \proves
-        a : T_1
+        \alpha; \Gp{\Gamma} \proves
+        \lam{f : T} {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~ 
+        (\Ep{\Gamma \proves e_2 : \tau_2})} :
+        (T) \rightarrow \alpha
       }
     }
     {
-      \emptyset; \Gp{\Gamma}, a : T_1 \proves 
-      {\lam{b : T_2}{a}} : T_2 \rightarrow T_1
+      \emptyset; \Gp{\Gamma} \proves 
+      \Lam{\alpha}{
+      \lam{f : T} {f~ (\Ep{\Gamma \proves e_1 : \tau_1})~
+      (\Ep{\Gamma \proves e_2 : \tau_2})}} :
+      \forall{\alpha}. (T) \rightarrow \alpha
     }
-  }
-  {
-    \emptyset; \Gp{\Gamma} \proves 
-    \lam{a : T_1}{\lam{b : T_2}{a}} : 
-    T_1 \rightarrow T_2 \rightarrow T_1
-  }
 }
 {
-  \emptyset; \Gp{\Gamma} \proves 
-  \big((\Ep{\Gamma \proves e : \tau_1 * \tau_2})~[T_1]\big)~
-  (\lam{a : T_1}{\lam{b : T_2}{a}}) :
-  T_1
+      \emptyset; \Gp{\Gamma} \proves 
+      \Ep{\Gamma \proves (e_1, e_2) : \tau_1 * \tau_2} :
+      \Tp{\tau_1 * \tau_2}
+}
+      \end{equation*}
+
+Note that $\Gamma \proves e_1 : \tau_1$ and $\Gamma \proves e_2 : \tau_2$ are subderivations of $\Gamma \proves (e_1, e_2) : \tau_1 * \tau_2$ and thus we can apply the induction hypothesis on them and obtain the two judgements on top of the proof tree above.
+
+\medskip
+
+      \hspace{-4em} \begin{array}[t]{l}
+\Rule
+{
+    \Rule
+    {
+      \Rule
+      {
+        \Rule
+        {
+        }
+        {
+          \emptyset; \Gp{\Gamma} \proves
+          (\Ep{\Gamma \proves e : \tau_1 * \tau_2}) :
+          \forall{\alpha}.
+            (T_1 \rightarrow T_2 \rightarrow \alpha) \rightarrow \alpha
+        }
+        \quad
+        \Rule
+        {
+        }
+        {
+          \emptyset \proves T_1
+        }
+      }
+      {
+        \emptyset; \Gp{\Gamma} \proves 
+        (\Ep{\Gamma \proves e : \tau_1 * \tau_2})~[T_1] :
+        (T_1 \rightarrow T_2 \rightarrow T_1) \rightarrow T_1
+      }
+      \quad
+      \Rule
+      {
+        \Rule
+        {
+          \Rule
+          {
+          }
+          {
+            \emptyset; \Gp{\Gamma}, a : T_1, b : T_2 \proves
+            a : T_1
+          }
+        }
+        {
+          \emptyset; \Gp{\Gamma}, a : T_1 \proves 
+          {\lam{b : T_2}{a}} : T_2 \rightarrow T_1
+        }
+      }
+      {
+        \emptyset; \Gp{\Gamma} \proves 
+        \lam{a : T_1}{\lam{b : T_2}{a}} : 
+        T_1 \rightarrow T_2 \rightarrow T_1
+      }
+    }
+    {
+      \emptyset; \Gp{\Gamma} \proves 
+      \big((\Ep{\Gamma \proves e : \tau_1 * \tau_2})~[T_1]\big)~
+      (\lam{a : T_1}{\lam{b : T_2}{a}}) :
+      T_1
+    }
+}
+{
+      \emptyset; \Gp{\Gamma} \proves 
+      \Ep{\Gamma \proves \#1~e : \tau_1} : \Tp{\tau_1}
 }
       \end{array}
+
+\medskip
+
+    Note that $\Gamma \proves e : \tau_1 * \tau_2$ is a subderivation of $\Gamma \proves \#1~e : \tau_1$ and thus we can apply the induction hypothesis and obtain the leftmost judgement on the top of the proof tree above.
+
 \medskip
 
 For the next two proof trees I use:
@@ -340,96 +371,114 @@ For the next two proof trees I use:
       \hspace{0em} \begin{array}[t]{l}
 \Rule
 {
-  \Rule
-  {
     \Rule
     {
       \Rule
       {
         \Rule
         {
+          \Rule
+          {
+            \Rule
+            {
+            }
+            {
+              \alpha; \Gs{\Gamma}, 
+              f: T_1 \rightarrow \alpha, g : T_2 \rightarrow \alpha \proves
+              f: T_1 \rightarrow \alpha
+            }
+            \quad
+            \Rule
+            {
+            }
+            {
+              \alpha; \Gs{\Gamma}, 
+              f: T_1 \rightarrow \alpha, g : T_2 \rightarrow \alpha \proves
+              \Es{\Gamma \proves e : \tau_1} : T_1
+            }
+          }
+          {
+            \alpha; \Gs{\Gamma}, 
+            f: T_1 \rightarrow \alpha, g : T_2 \rightarrow \alpha \proves
+            f~\Es{\Gamma \proves e : \tau_1} : \alpha
+          }
         }
         {
-          \alpha; \Gs{\Gamma}, 
-          f: T_1 \rightarrow \alpha, g : T_2 \rightarrow \alpha \proves
-          f: T_1 \rightarrow \alpha
-        }
-        \quad
-        \Rule
-        {
-        }
-        {
-          \alpha; \Gs{\Gamma}, 
-          f: T_1 \rightarrow \alpha, g : T_2 \rightarrow \alpha \proves
-          \Es{\Gamma \proves e : \tau_1} : T_1
+          \alpha; \Gs{\Gamma}, f: T_1 \rightarrow \alpha \proves
+          \lam{g : T_2 \rightarrow \alpha}{
+          f~\Es{\Gamma \proves e : \tau_1}} : 
+          (T_2 \rightarrow \alpha) \rightarrow \alpha
         }
       }
       {
-        \alpha; \Gs{\Gamma}, 
-        f: T_1 \rightarrow \alpha, g : T_2 \rightarrow \alpha \proves
-        f~\Es{\Gamma \proves e : \tau_1} : \alpha
+        \alpha; \Gs{\Gamma} \proves 
+        \lam{f : T_1 \rightarrow \alpha}{
+        \lam{g : T_2 \rightarrow \alpha}{
+        f~\Es{\Gamma \proves e : \tau_1}}} : 
+        (T_1 \rightarrow \alpha) \rightarrow 
+        (T_2 \rightarrow \alpha) \rightarrow \alpha
       }
     }
     {
-      \alpha; \Gs{\Gamma}, f: T_1 \rightarrow \alpha \proves
+      \emptyset; \Gs{\Gamma} \proves 
+      \Lam{\alpha}{
+      \lam{f : T_1 \rightarrow \alpha}{
       \lam{g : T_2 \rightarrow \alpha}{
-      f~\Es{\Gamma \proves e : \tau_1}} : 
+      f~\Es{\Gamma \proves e : \tau_1}}}} : 
+      \forall{\alpha}.(T_1 \rightarrow \alpha) \rightarrow 
       (T_2 \rightarrow \alpha) \rightarrow \alpha
     }
-  }
-  {
-    \alpha; \Gs{\Gamma} \proves 
-    \lam{f : T_1 \rightarrow \alpha}{
-    \lam{g : T_2 \rightarrow \alpha}{
-    f~\Es{\Gamma \proves e : \tau_1}}} : 
-    (T_1 \rightarrow \alpha) \rightarrow 
-    (T_2 \rightarrow \alpha) \rightarrow \alpha
-  }
 }
 {
-  \emptyset; \Gs{\Gamma} \proves 
-  \Lam{\alpha}{
-  \lam{f : T_1 \rightarrow \alpha}{
-  \lam{g : T_2 \rightarrow \alpha}{
-  f~\Es{\Gamma \proves e : \tau_1}}}} : 
-  \forall{\alpha}.(T_1 \rightarrow \alpha) \rightarrow 
-  (T_2 \rightarrow \alpha) \rightarrow \alpha
+    \emptyset; \Gs{\Gamma} \proves 
+    \Es{\Gamma \proves \inl{\sumt}{e} : \sumt} : \Ts{\sumt}
 }
       \end{array}
 
-      \bigskip
+      \medskip
+
+Note that $\Gamma \proves e : \tau_1$ is a subderivation of $\Gamma \proves \inl{\sumt}{e} : \sumt$ and thus we can apply the induction hypothesis and obtain the rightmost judgement on the top of the proof tree above.
+
+      \medskip
 
       \hspace{-4em} \begin{array}[t]{l}
 \Rule
 {
-  \Rule
-  {
-    A
-  }
-  {
-    \emptyset; \Gs{\Gamma} \proves 
-    (\Es{\Gamma \proves e_0 : \sumt}~[T_3])~
-    (\lam{x : T_1}{\Es{\Gamma \proves e_1 : \tau_3}}) :
-    T'
-  }
-  \quad
-  \Rule
-  {
-    B
-  }
-  {
-    \emptyset; \Gs{\Gamma} \proves 
-    \lam{y : T_2}{\Es{\Gamma \proves e_2 : \tau_3}} : 
-    T_2 \rightarrow T_3
-  }
+    \Rule
+    {
+      \Rule
+      {
+        A
+      }
+      {
+        \emptyset; \Gs{\Gamma} \proves 
+        (\Es{\Gamma \proves e_0 : \sumt}~[T_3])~
+        (\lam{x : T_1}{\Es{\Gamma \proves e_1 : \tau_3}}) :
+        T'
+      }
+      \quad
+      \Rule
+      {
+        B
+      }
+      {
+        \emptyset; \Gs{\Gamma} \proves 
+        \lam{y : T_2}{\Es{\Gamma \proves e_2 : \tau_3}} : 
+        T_2 \rightarrow T_3
+      }
+    }
+    {
+      \emptyset; \Gs{\Gamma} \proves 
+      (\Es{\Gamma \proves e_0 : \sumt}~
+      [T_3])~
+      (\lam{x : T_1}{\Es{\Gamma \proves e_1 : \tau_3}})~
+      (\lam{y : T_2}{\Es{\Gamma \proves e_2 : \tau_3}}) : 
+      T_3
+    }
 }
 {
-  \emptyset; \Gs{\Gamma} \proves 
-  (\Es{\Gamma \proves e_0 : \sumt}~
-  [T_3])~
-  (\lam{x : T_1}{\Es{\Gamma \proves e_1 : \tau_3}})~
-  (\lam{y : T_2}{\Es{\Gamma \proves e_2 : \tau_3}}) : 
-  T_3
+    \emptyset; \Gs{\Gamma} \proves 
+    \Es{\case{e_0}{e_1}{e_2}} : \Ts{\tau_3}
 }
       \end{array}
 
@@ -516,6 +565,9 @@ Here is the subtree B:
 }
 \end{array}
 
+\medskip
+
+The top judgements in both $A$ and $B$ can be obtained by applying the induction hypothesis on the subderivations $\Gamma \proves e_1 : \tau_3$, $\Gamma \proves e_2 : \tau_3$ and $\Gamma \proves e_0 : \sumt$
 
 \end{small}
 
