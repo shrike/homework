@@ -904,25 +904,25 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 		
 	  % --- 3c. ---
 	  \item
-		We will define a coercion function that takes a term of type $\m{\alpha}{\tau'}$ and produces a term of type $\tau'$. The coercion function will also take the subtyping environment $S$ which contains pairs $(\tau_1,\tau_2), \tau_i::\mathrm{type}$ such that $\tau_1\le\tau_2$. We will assume to have a function $\Theta_0(\tau\le\tau',S):\tau * S \arrow\tau'$ which implements the rule for the end of the unfolding of recursive types:
+		We will define coercion function that takes a term of type $\m{\alpha}{\tau}$ and produces a term of type $\tau'$ (a term of type $\tau$ and produces a term of type $\m{\alpha}{\tau'}$, respectively). The coercion functions will also take the subtyping environment $S$ which contains pairs $(\tau_1,\tau_2), \tau_i::\mathrm{type}$ such that $\tau_1\le\tau_2$. We will assume to have a function $\Theta_0(\tau\le\tau'):\tau * S \arrow\tau'$ which implements the rule for the end of the unfolding of recursive types:
 		\[
 			\Rule{}{S, \tau_1\le\tau_2 \proves\tau_1\le\tau_2}
 		\]
 		
 		The coercion function for \textsc{RecL} then is:
 		\begin{eqnarray*}
-			\Theta\SB{\m{\alpha}{\tau}\le\tau'}
-			&\definedas&\lam{x: \m{\alpha}{\tau}}{\lam{S}\\
-			&&{\IF~(\m{\alpha}{\tau},\tau')\in S~\THEN~\Theta_0(\m{\alpha}{\tau}\le\tau',S)}~x~S
-			\\&& \ELSE ~ \textbf{rec} ~\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau}}{\alpha}\le\tau')~(\mathrm{unfold}~x)} ~(S\cup\{(\m{\alpha}{\tau},\tau')\})
+			\textbf{let rec} ~ \Theta\SB{\m{\alpha}{\tau}\le\tau'}
+			&=&\lam{x: \m{\alpha}{\tau}}{\lam{S}\\
+			&&{\IF~(\m{\alpha}{\tau},\tau')\in S~\THEN~\Theta_0(\m{\alpha}{\tau}\le\tau')}~x~S
+			\\&& \ELSE  ~\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau}}{\alpha}\le\tau')~(\mathrm{unfold}~x)} ~(S\cup\{(\m{\alpha}{\tau},\tau')\})
 		\end{eqnarray*}
 		
 		Similarly, we can define a coercion function for \textsc{RecR} as follows:
 		\begin{eqnarray*}
-			\Theta\SB{\tau\le\m{\alpha}{\tau'}}
-			&\definedas&\lam{x: \tau}{\lam{S}\\
-			&&{\IF~(\tau,\m{\alpha}{\tau'})\in S~\THEN~\Theta_0(\tau\le\m{\alpha}{\tau'},S)~x~S}
-			\\&& \ELSE ~ \textbf{rec} ~\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau'}}{\alpha})~(x)} ~(S \cup \{(\tau,\m{\alpha}{\tau'})\})
+			\textbf{let rec} ~ \Theta\SB{\tau\le\m{\alpha}{\tau'}}
+			&=&\lam{x: \tau}{\lam{S}\\
+			&&{\IF~(\tau,\m{\alpha}{\tau'})\in S~\THEN~\Theta_0(\tau\le\m{\alpha}{\tau'})~x~S}
+			\\&& \ELSE ~\textbf{fold}_{\m{\alpha}{\tau'}}\left(\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau'}}{\alpha})~(x)} ~(S \cup \{(\tau,\m{\alpha}{\tau'})\})\right)
 		\end{eqnarray*}
 		
 		\textbf{TODO}: reason recursion is well-founded bla-bla
@@ -949,7 +949,7 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 					\SB{\Gamma\proves\lam{x:\tau}{e}:\tau\arrow\tau'} &=&
 					\left[(\Tr{T}{\Gamma(x_1)*\ldots *\Gamma(x_n)}),\right.\\
 					&&(\lam{x:\Tr{T}{\tau}}{\textrm{let} ~ x_1:\Tr{T}{\Gamma(x_1)}=\#1p ~ \mathrm{in} \ldots ~ x_n:\Tr{T}{\Gamma(x_n)}=\#np ~ \mathrm{in} ~\\
-					&&\SB{\Gamma, x:\Tr{T}{\tau}\proves e:\Tr{T}{\tau'}},\left. (x_1,\ldots,x_n)}) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
+					&&\SB{\Gamma, x:\tau\proves e:\tau'},\left. (x_1,\ldots,x_n)}) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
 				\end{eqnarray*}
 			\end{small}
 			
@@ -959,7 +959,7 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 			\begin{small}
 				\begin{eqnarray*}
 					\SB{\Gamma\proves e_1 ~ e_2:\tau'}
-						&=& \mathrm{let} ~ [\alpha,x] = \SB{\Gamma\proves e_1:\Tr{T}{\tau}\arrow \Tr{T}{\tau'}} ~ \mathrm{in} ~ (\#1 ~ x) ~(\#2 ~ x) ~\SB{\Gamma\proves e_2:\Tr{T}{\tau}}
+						&=& \mathrm{let} ~ [\alpha,x] = \SB{\Gamma\proves e_1:\tau\arrow \tau'} ~ \mathrm{in} ~ (\#1 ~ x) ~(\#2 ~ x) ~\SB{\Gamma\proves e_2:\tau}
 				\end{eqnarray*}
 			\end{small}
 		\end{enumerate}
