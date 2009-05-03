@@ -925,7 +925,6 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 			\\&& \ELSE ~\textbf{fold}_{\m{\alpha}{\tau'}}\left(\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau'}}{\alpha})~(x)} ~(S \cup \{(\tau,\m{\alpha}{\tau'})\})\right)
 		\end{eqnarray*}
 		
-		\textbf{TODO}: reason recursion is well-founded bla-bla
 	\end{enumerate}
 	
   %--------------------
@@ -948,8 +947,9 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 				\begin{eqnarray*}
 					\SB{\Gamma\proves\lam{x:\tau}{e}:\tau\arrow\tau'} &=&
 					\left[(\Tr{T}{\Gamma(x_1)*\ldots *\Gamma(x_n)}),\right.\\
-					&&(\lam{x:\Tr{T}{\tau}}{\textrm{let} ~ x_1:\Tr{T}{\Gamma(x_1)}=\#1p ~ \mathrm{in} \ldots ~ x_n:\Tr{T}{\Gamma(x_n)}=\#np ~ \mathrm{in} ~\\
-					&&\SB{\Gamma, x:\tau\proves e:\tau'},\left. (x_1,\ldots,x_n)}) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
+					&&\left(\lam{\rho:\Tr{T}{\Gamma(x_1)}*\ldots *\Tr{T}{\Gamma(x_n)}}{}\lam{x:\Tr{T}{\tau}}{}\right.\\
+					&&\textrm{let} ~ x_1:\Tr{T}{\Gamma(x_1)}=\#1\rho ~ \mathrm{in} \ldots ~ x_n:\Tr{T}{\Gamma(x_n)}=\#n\rho ~ \mathrm{in} ~\\
+					&&\left.\SB{\Gamma, x:\tau\proves e:\tau'},\left. (x_1,\ldots,x_n)\right) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
 				\end{eqnarray*}
 			\end{small}
 			
