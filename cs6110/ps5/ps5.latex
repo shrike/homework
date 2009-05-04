@@ -690,7 +690,7 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 			\end{equation*}
 	  	\end{footnotesize}
 	  	
-	  	In the last step we can apply the end-of-unfolding rule (\textsc{Unf}) since the subtyping we want to prove $()$ was added to the context $S$ in the first application of the $(\textsc{RecL})$ rule. To make the derivation fit in the page we have denoted by $R_1$ and $R_2$ the subderivations of the following kind, necessary to prove subtyping of function types:
+	  	In the last step we can apply the end-of-unfolding rule (\textsc{Unf}) since the subtyping we want to prove $(\m{\alpha}{1\rightarrow \alpha} \le \m{\beta}{1\rightarrow (1\rightarrow \beta)})$ was added to the context $S$ in the first application of the $(\textsc{RecL})$ rule. To make the derivation fit in the page we have denoted by $R_1$ and $R_2$ the subderivations of the following kind, necessary to prove subtyping of function types:
 	  	\[\RuleSide{}
 					 	{S,\ldots\proves 1\le 1}
 					 	{(\textsc{Refl})}
@@ -910,13 +910,14 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 		\[
 			\Rule{}{S, \tau_1\le\tau_2 \proves\tau_1\le\tau_2}
 		\]
+		The function $\Theta_0(\tau\le\tau')$ will simply return its argument (of type $\tau$) as a term of type $\tau'$.
 		
 		The coercion function for \textsc{RecL} then is:
 		\begin{eqnarray*}
 			\textbf{let rec} ~ \Theta\SB{\m{\alpha}{\tau}\le\tau'}
 			&=&\lam{x: \m{\alpha}{\tau}}{\lam{S}\\
 			&&{\IF~(\m{\alpha}{\tau},\tau')\in S~\THEN~\Theta_0(\m{\alpha}{\tau}\le\tau')}~x~S
-			\\&& \ELSE  ~\Theta(\tau\le\subst{\tau'}{\m{\alpha}{\tau}}{\alpha}\le\tau')~(\mathrm{unfold}~x)} ~(S\cup\{(\m{\alpha}{\tau},\tau')\})
+			\\&& \ELSE  ~\Theta(\subst{\tau}{\m{\alpha}{\tau}}{\alpha}\le\tau')~(\mathrm{unfold}~x)} ~(S\cup\{(\m{\alpha}{\tau},\tau')\})
 		\end{eqnarray*}
 		
 		Similarly, we can define a coercion function for \textsc{RecR} as follows:
