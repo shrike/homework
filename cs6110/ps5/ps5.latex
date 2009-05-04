@@ -74,6 +74,8 @@
 
   Next, we extend the proof for preservation of the $SN_{\tau}$ property when we walk either forward or backward in the evaluation sequence (\textbf{Lemma 2}) with the case for $\tau = \tau_1 + \tau_2$. Assume $\proves e : \tau_1 + \tau_2 \land e \stepsone e' \land SN_{\tau_1 + \tau_2}(e')$; we need to show $SN_{\tau_1 + \tau_2}(e)$. The proof is identical to the proof for the case $\tau = B$ because we have no third condition: $SN_{\tau_1 + \tau_2}(e')$ means $e'$ converges, but since $e \stepsone e'$ then $e$ converges as well; from $\proves e : \tau_1 + \tau_2$ and $e \stepsto$ we conclude $SN_{\tau_1 + \tau_2}(e)$.
 
+  The proof for the other direction of \textbf{Lemma 2} is analogous (as in the class notes).
+
   Finally, we need to extend the proof of \textbf{Lemma 4} which states that
 
   \begin{equation*}
