@@ -949,7 +949,7 @@ The top judgements in both $A$ and $B$ can be obtained by applying the induction
 				\begin{eqnarray*}
 					\SB{\Gamma\proves\lam{x:\tau}{e}:\tau\arrow\tau'} &=&
 					\left[(\Tr{T}{\Gamma(x_1)*\ldots *\Gamma(x_n)}),\right.\\
-					&&\left(\lam{\rho:\Tr{T}{\Gamma(x_1)}*\ldots *\Tr{T}{\Gamma(x_n)}}{}\lam{x:\Tr{T}{\tau}}{}\right.\\
+					&&\left(\lam{\rho:\Tr{T}{\Gamma(x_1)*\ldots *\Gamma(x_n)}}{}\lam{x:\Tr{T}{\tau}}{}\right.\\
 					&&\textrm{let} ~ x_1:\Tr{T}{\Gamma(x_1)}=\#1\rho ~ \mathrm{in} \ldots ~ x_n:\Tr{T}{\Gamma(x_n)}=\#n\rho ~ \mathrm{in} ~\\
 					&&\left.\SB{\Gamma, x:\tau\proves e:\tau'},\left. (x_1,\ldots,x_n)\right) \right]_{\exists\alpha.(\alpha\arrow\Tr{T}{\tau}\arrow\Tr{T}{\tau'})*\alpha}
 				\end{eqnarray*}
